@@ -45,6 +45,7 @@ namespace Microsoft.Bot.Sample.LuisBot
                 // Handle conversation state changes, like members being added and removed
                 // Use Activity.MembersAdded and Activity.MembersRemoved and Activity.Action for info
                 // Not available in all channels
+                Activity reply = message.CreateReply($"Bem vindo!");
             }
             else if (message.Type == ActivityTypes.ContactRelationUpdate)
             {
