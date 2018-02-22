@@ -81,8 +81,10 @@ namespace Microsoft.Bot.Sample.LuisBot
             bool isTrackId = false;
             IList<EntityRecommendation> listOfEntitiesFound = result.Entities;
             // await context.PostAsync($"Result.Entities {result.Entities[0].Type}"); Também funciona
+            await context.PostAsync($"Intent is {result.Intents[0]}");
+            await context.PostAsync($"Intent is {result.Intents[0].Intent}");
 
-            if (result.Intents.Equals("FindOrder"))
+            if (result.Intents[0].Intent.Equals("FindOrder"))
             {
                 foreach (EntityRecommendation item in listOfEntitiesFound)
                 {
