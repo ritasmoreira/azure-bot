@@ -60,11 +60,13 @@ namespace Microsoft.Bot.Sample.LuisBot
             //string entity = this.BotEntityRecognition(Intent_TurnOff, result);
 
             IList<EntityRecommendation> listOfEntitiesFound = result.Entities;
-            await context.PostAsync($"Result identified {result.Entities[0].Type}");
+            await context.PostAsync($"Result.Entities {result.Entities[0].Type}");
 
             foreach (EntityRecommendation item in listOfEntitiesFound)
             {
-                await context.PostAsync($"Entity identified {item.Type}");
+                await context.PostAsync($"Item.Type identified {item.Type}");
+                await context.PostAsync($"Item.Entity identified {item.Entity}");
+
                 if (item.Type.Equals("TrackingID"))
                 {
                     await context.PostAsync($"You have reached {result.Intents[0].Intent}. Thank you for the Track ID. I will look into that");
