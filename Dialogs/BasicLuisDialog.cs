@@ -81,8 +81,6 @@ namespace Microsoft.Bot.Sample.LuisBot
             bool isTrackId = false;
             IList<EntityRecommendation> listOfEntitiesFound = result.Entities;
             // await context.PostAsync($"Result.Entities {result.Entities[0].Type}"); Também funciona
-            await context.PostAsync($"Intent is {result.Intents[0]}");
-            await context.PostAsync($"Intent is {result.Intents[0].Intent}");
 
             if (result.Intents[0].Intent.Equals("FindOrder"))
             {
@@ -102,6 +100,11 @@ namespace Microsoft.Bot.Sample.LuisBot
                     context.Wait(MessageReceived);
                 }
             } 
+            if(result.Intents[0].Intent.Equals("Cancel"))
+            {
+                await context.PostAsync($"A sua encomenda será cancelada. Obrigado  \n You have reached {result.Intents[0].Intent}.");
+
+            }
         }
     }
 }
