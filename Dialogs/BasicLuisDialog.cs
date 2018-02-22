@@ -15,12 +15,32 @@ namespace Microsoft.Bot.Sample.LuisBot
     [Serializable]
     public class BasicLuisDialog : LuisDialog<object>
     {
+
+
+
         public BasicLuisDialog() : base(new LuisService(new LuisModelAttribute(
             ConfigurationManager.AppSettings["LuisAppId"], 
             ConfigurationManager.AppSettings["LuisAPIKey"], 
             domain: ConfigurationManager.AppSettings["LuisAPIHostName"])))
         {
         }
+
+        public async Task StartAsync(IDialogContext context)
+        {
+            Attachment attachment = null;
+            var replyMessage = context.MakeMessage();
+
+            await context.PostAsync($"Bem vindo ao bot de encomendas. Como poderei ajudá-lo/a?");
+
+            attachment = GetInternetAttachment();
+            replyMessage.Attachments = new List<Attachment> { attachment };
+            await context.PostAsync(replyMessage);
+
+            context.Wait(MessageReceivedAsync);
+        }
+
+
+
 
         [LuisIntent("None")]
         public async Task NoneIntent(IDialogContext context, LuisResult result)
@@ -106,5 +126,21 @@ namespace Microsoft.Bot.Sample.LuisBot
 
             }
         }
+
+
+
+        // ############################### IMG 
+
+        private static Attachment GetInternetAttachment()
+        {
+            return new Attachment
+            {
+                Name = "BotFrameworkOverview.png",
+                ContentType = "image/png",
+                ContentUrl = "https://docs.microsoft.com/en-us/bot-framework/media/how-it-works/architecture-resize.png"
+            };
+        }
+
+
     }
 }
