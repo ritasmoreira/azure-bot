@@ -46,10 +46,30 @@ namespace Microsoft.Bot.Sample.LuisBot
             await this.ShowLuisResult(context, result);
         }
         
+        /*
+        public string BotEntityRecognition(string intentName, LuisResult result)
+        {
+            IList<EntityRecommendation> listOfEntitiesFound = result.Entities;
+            StringBuilder entityResults = new StringBuilder();
+        } */
+
 
         private async Task ShowLuisResult(IDialogContext context, LuisResult result) 
         {
-            await context.PostAsync($"You have reached {result.Intents[0].Intent}. You said: {result.Query}");
+            //string entity = this.BotEntityRecognition(Intent_TurnOff, result);
+
+            IList<EntityRecommendation> listOfEntitiesFound = result.Entities;
+
+            foreach(EntityRecommendation item in listOfEntitiesFound)
+            {
+                if(item.Entity.Equals("TrackingID"))
+                {
+                    await context.PostAsync($"You have reached {result.Intents[0].Intent}. I will look into that");
+                    break;
+                }
+            }
+
+            await context.PostAsync($"You have reached {result.Intents[0].Intent}. You said: {result.Query}. Could you give me your track id?");
             context.Wait(MessageReceived);
         }
     }
