@@ -46,16 +46,21 @@ namespace Microsoft.Bot.Sample.LuisBot
                 // Use Activity.MembersAdded and Activity.MembersRemoved and Activity.Action for info
                 // Not available in all channels
                 //Activity reply = message.CreateReply($"Bem vindo!");
+
                 IConversationUpdateActivity iConversationUpdated = message as IConversationUpdateActivity;
                 if (iConversationUpdated != null)
                 {
                     ConnectorClient connector = new ConnectorClient(new System.Uri(message.ServiceUrl));
 
-
-                    var reply = ((Activity)iConversationUpdated).CreateReply($"Hey I am a chatbot");
-                    connector.Conversations.ReplyToActivityAsync(reply);
-                        
-                    
+                    foreach (var member in iConversationUpdated.MembersAdded ?? System.Array.Empty<ChannelAccount>())
+                    {
+                        // if the bot is added, then 
+                        if (member.Id == iConversationUpdated.Recipient.Id)
+                        {
+                            var reply = ((Activity)iConversationUpdated).CreateReply($"Hey I am a chatbot");
+                            connector.Conversations.ReplyToActivityAsync(reply);
+                        }
+                    }
                 }
             }
             else if (message.Type == ActivityTypes.ContactRelationUpdate)
