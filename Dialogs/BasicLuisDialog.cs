@@ -63,7 +63,8 @@ namespace Microsoft.Bot.Sample.LuisBot
 
             foreach(EntityRecommendation item in listOfEntitiesFound)
             {
-                //await context.PostAsync($"I am going through the entities {item.Type}");
+                await context.PostAsync($"I am going through the entities {item.Type}");
+
                 if (item.Type.Equals("TrackingID"))
                 {
                     await context.PostAsync($"You have reached {result.Intents[0].Intent}. Thank you for the Track ID. I will look into that");
