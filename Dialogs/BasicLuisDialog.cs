@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Threading;
 using System.Threading.Tasks;
-
+using LuisBot.Dialogs;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.Luis;
 using Microsoft.Bot.Builder.Luis.Models;
+using Microsoft.Bot.Connector;
 
 namespace Microsoft.Bot.Sample.LuisBot
 {
@@ -33,6 +35,9 @@ namespace Microsoft.Bot.Sample.LuisBot
         public async Task FindOrderIntent(IDialogContext context, LuisResult result)
         {
             await this.ShowLuisResult(context, result);
+
+            //await context.Forward(new FindOrderDialog(), ResumeAfterFindOrderDialog, result, CancellationToken.None);
+     
         }
 
         [LuisIntent("Cancel")]
@@ -46,14 +51,30 @@ namespace Microsoft.Bot.Sample.LuisBot
         {
             await this.ShowLuisResult(context, result);
         }
-        
-        /*
-        public string BotEntityRecognition(string intentName, LuisResult result)
-        {
-            IList<EntityRecommendation> listOfEntitiesFound = result.Entities;
-            StringBuilder entityResults = new StringBuilder();
-        } */
 
+       
+
+        private async Task ResumeAfterFindOrderDialog(IDialogContext context, IAwaitable<string> result)
+        {
+            // Store the value that NewOrderDialog returned. 
+            // (At this point, new order dialog has finished and returned some value to use within the root dialog.)
+            var resultFromNewOrder = await result;
+
+            await context.PostAsync($"New order dialog just told me this: {resultFromNewOrder}");
+
+            // Again, wait for the next message from the user.
+           // context.Wait(this.MessageReceivedAsync);
+        }
+
+
+        private async Task MessageReceivedAsync(IDialogContext context, IAwaitable<object> result)
+        {
+            var activity = await result as IMessageActivity;
+
+            // TODO: Put logic for handling user message here
+
+            context.Wait(MessageReceivedAsync);
+        }
 
         private async Task ShowLuisResult(IDialogContext context, LuisResult result) 
         {
@@ -61,21 +82,24 @@ namespace Microsoft.Bot.Sample.LuisBot
             IList<EntityRecommendation> listOfEntitiesFound = result.Entities;
             // await context.PostAsync($"Result.Entities {result.Entities[0].Type}"); Também funciona
 
-            foreach (EntityRecommendation item in listOfEntitiesFound)
+            if (result.Intents.Equals("FindOrder"))
             {
-                if (item.Type.Equals("TrackingID"))
+                foreach (EntityRecommendation item in listOfEntitiesFound)
                 {
-                    await context.PostAsync($"Thank you for the Track ID. I will look into that \n You have reached {result.Intents[0].Intent}");
-                    isTrackId = true;
-                    break;
+                    if (item.Type.Equals("TrackingID"))
+                    {
+                        await context.PostAsync($"Obrigada pelo número de identificação. Vou averiguar onde está a sua encomenda \n You have reached {result.Intents[0].Intent}");
+                        isTrackId = true;
+                        break;
+                    }
                 }
-            }
 
-            if (!isTrackId)
-            {
-                await context.PostAsync($"Could you give me your order's track id, please? \n You have reached {result.Intents[0].Intent}.");
-                context.Wait(MessageReceived);
-            }
+                if (!isTrackId)
+                {
+                    await context.PostAsync($"Por favor insira o número de identificação da sua encomenda. \n You have reached {result.Intents[0].Intent}.");
+                    context.Wait(MessageReceived);
+                }
+            } 
         }
     }
 }
