@@ -25,29 +25,61 @@ namespace Microsoft.Bot.Sample.LuisBot
         {
         }
 
+        // ---------------------------------------------------
+
         public async Task StartAsync(IDialogContext context)
         {
-            Attachment attachment = null;
-            var replyMessage = context.MakeMessage();
-
-            await context.PostAsync($"Bem vindo ao bot de encomendas. Como poderei ajudá-lo/a?");
-
-            attachment = GetInternetAttachment();
-            replyMessage.Attachments = new List<Attachment> { attachment };
-            await context.PostAsync(replyMessage);
-
-            context.Wait(MessageReceivedAsync);
+            context.Wait(this.MessageReceivedAsync);
         }
 
 
+        public async virtual Task MessageReceivedAsync(IDialogContext context, IAwaitable<IMessageActivity> result)
+        {
+            var message = await result;
 
+            var welcomeMessage = context.MakeMessage();
+            welcomeMessage.Text = "Bem vindo/a!";
+
+            await context.PostAsync(welcomeMessage);
+
+            //await this.ShowImageAttachment(context, welcomeMessage);
+        }
+        /*
+        public async Task ShowImageAttachment(IDialogContext context, IAwaitable<string> argument)
+        {
+            var message = await argument;
+
+            var replyMessage = context.MakeMessage();
+
+            Attachment attachment = null;
+            attachment = GetInternetAttachment();
+
+            // The Attachments property allows you to send and receive images and other content
+            replyMessage.Attachments = new List<Attachment> { attachment };
+            await context.PostAsync(replyMessage);
+
+        }
+
+        private static Attachment GetInternetAttachment()
+        {
+            return new Attachment
+            {
+                Name = "BotFrameworkOverview.png",
+                ContentType = "image/png",
+                ContentUrl = "https://docs.microsoft.com/en-us/bot-framework/media/how-it-works/architecture-resize.png"
+            };
+        }
+
+    */
+
+
+        // -------------------------------------------
 
         [LuisIntent("None")]
         public async Task NoneIntent(IDialogContext context, LuisResult result)
         {
             await this.ShowLuisResult(context, result);
         }
-        // Comentario
 
         // Go to https://luis.ai and create a new intent, then train/publish your luis app.
         // Finally replace "Gretting" with the name of your newly created intent in the following handler
@@ -85,16 +117,7 @@ namespace Microsoft.Bot.Sample.LuisBot
             // Again, wait for the next message from the user.
            // context.Wait(this.MessageReceivedAsync);
         }
-
-
-        private async Task MessageReceivedAsync(IDialogContext context, IAwaitable<object> result)
-        {
-            var activity = await result as IMessageActivity;
-
-            // TODO: Put logic for handling user message here
-
-            context.Wait(MessageReceivedAsync);
-        }
+        
 
         private async Task ShowLuisResult(IDialogContext context, LuisResult result) 
         {
@@ -126,21 +149,6 @@ namespace Microsoft.Bot.Sample.LuisBot
 
             }
         }
-
-
-
-        // ############################### IMG 
-
-        private static Attachment GetInternetAttachment()
-        {
-            return new Attachment
-            {
-                Name = "BotFrameworkOverview.png",
-                ContentType = "image/png",
-                ContentUrl = "https://docs.microsoft.com/en-us/bot-framework/media/how-it-works/architecture-resize.png"
-            };
-        }
-
 
     }
 }
