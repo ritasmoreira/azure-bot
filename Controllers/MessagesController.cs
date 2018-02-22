@@ -33,7 +33,7 @@ namespace Microsoft.Bot.Sample.LuisBot
             return new HttpResponseMessage(System.Net.HttpStatusCode.Accepted);
         }
 
-        private Activity HandleSystemMessage(Activity message)
+        private async Activity HandleSystemMessage(Activity message)
         {
             if (message.Type == ActivityTypes.DeleteUserData)
             {
@@ -45,7 +45,16 @@ namespace Microsoft.Bot.Sample.LuisBot
                 // Handle conversation state changes, like members being added and removed
                 // Use Activity.MembersAdded and Activity.MembersRemoved and Activity.Action for info
                 // Not available in all channels
-                Activity reply = message.CreateReply($"Bem vindo!");
+               // Activity reply = message.CreateReply($"Bem vindo!");
+
+
+                ConnectorClient client = new ConnectorClient(new Uri(message.ServiceUrl));
+
+                var reply = message.CreateReply();
+
+                reply.Text = "Hello user how are you?";
+
+                await client.Conversations.ReplyToActivityAsync(reply);
             }
             else if (message.Type == ActivityTypes.ContactRelationUpdate)
             {
