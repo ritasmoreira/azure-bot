@@ -57,25 +57,25 @@ namespace Microsoft.Bot.Sample.LuisBot
 
         private async Task ShowLuisResult(IDialogContext context, LuisResult result) 
         {
-            //string entity = this.BotEntityRecognition(Intent_TurnOff, result);
-
+            bool isTrackId = false;
             IList<EntityRecommendation> listOfEntitiesFound = result.Entities;
-            await context.PostAsync($"Result.Entities {result.Entities[0].Type}");
+            // await context.PostAsync($"Result.Entities {result.Entities[0].Type}"); Também funciona
 
             foreach (EntityRecommendation item in listOfEntitiesFound)
             {
-                await context.PostAsync($"Item.Type identified {item.Type}");
-                await context.PostAsync($"Item.Entity identified {item.Entity}");
-
                 if (item.Type.Equals("TrackingID"))
                 {
-                    await context.PostAsync($"You have reached {result.Intents[0].Intent}. Thank you for the Track ID. I will look into that");
+                    await context.PostAsync($"Thank you for the Track ID. I will look into that \n You have reached {result.Intents[0].Intent}");
+                    isTrackId = true;
                     break;
                 }
             }
-            
-            await context.PostAsync($"You have reached {result.Intents[0].Intent}. You said: {result.Query}. Could you give me your track id? \n This is your entity {result.Entities[0].Type}");
-            context.Wait(MessageReceived);
+
+            if (!isTrackId)
+            {
+                await context.PostAsync($"Could you give me your order's track id, please? \n You have reached {result.Intents[0].Intent}.");
+                context.Wait(MessageReceived);
+            }
         }
     }
 }
