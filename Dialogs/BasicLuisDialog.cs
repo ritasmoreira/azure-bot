@@ -91,8 +91,13 @@ namespace Microsoft.Bot.Sample.LuisBot
         {
             //await this.ShowLuisResult(context, result);
             var message = await activity;
-            await context.Forward(new FindOrderDialog(), this.ResumeAfterFindOrderDialog, message, CancellationToken.None);
+            await context.Forward(new FindOrderDialog(), this.ResumeAfterCancelDialog, message, CancellationToken.None);
 
+        }
+
+        private async Task ResumeAfterCancelDialog(IDialogContext context, IAwaitable<object> result)
+        {
+            // ir buscar 
         }
 
         [LuisIntent("Help")]
