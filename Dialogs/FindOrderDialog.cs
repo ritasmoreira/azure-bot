@@ -101,6 +101,8 @@ namespace LuisBot.Dialogs
             await context.PostAsync(message);
             context.Wait(MessageReceived);
 
+            await context.PostAsync($"Estou a fazer um debug");
+
             if (message.Value.Equals("Sim")) {
                 await context.PostAsync($"A sua encomenda será cancelada. Obrigado  \n You have reached {result.Intents[0].Intent}.");
                 context.Done(true);
