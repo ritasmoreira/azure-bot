@@ -99,7 +99,7 @@ namespace LuisBot.Dialogs
             };
 
             await context.PostAsync(message);
-            context.Wait(MessageReceived);  // esta a ir atras buscar a resposta enquanto devia tira-la logo daqui
+           // context.Wait(MessageReceived);  // esta a ir atras buscar a resposta enquanto devia tira-la logo daqui
 
 
             if (message.Value.Equals("Sim"))
