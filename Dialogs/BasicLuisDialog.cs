@@ -64,11 +64,11 @@ namespace Microsoft.Bot.Sample.LuisBot
         {
             var animationCard = new AnimationCard
             {
-                Title = "É já a seguir",
-                Subtitle = "Choo choo",
+                Title = "Ok.....",
+                Subtitle = "Woof",
                 Image = new ThumbnailUrl
                 {
-                    Url = "https://pbs.twimg.com/profile_images/828073361397932032/eKTigt-2_400x400.jpg"
+                    Url = "https://www.reddit.com/r/reactiongifs/comments/7ytxqb/mrw_they_say_im_a_good_boy_but_i_know_what_ive/"
                 },
                 Media = new List<MediaUrl>
                 {
