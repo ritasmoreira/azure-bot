@@ -27,10 +27,11 @@ namespace Microsoft.Bot.Sample.LuisBot
 
         // ---------------------------------------------------
 
-        public async Task StartAsync(IDialogContext context)
+        /*public async Task StartAsync(IDialogContext context)
         {
             await this.ShowImageAttachment(context);
-        }
+            
+        } */
 
         public async Task ShowImageAttachment(IDialogContext context)
         {
@@ -56,7 +57,31 @@ namespace Microsoft.Bot.Sample.LuisBot
             };
         }
 
-    
+
+
+        // Animation Card
+        private static Attachment GetAnimationCard()
+        {
+            var animationCard = new AnimationCard
+            {
+                Title = "Microsoft Bot Framework",
+                Subtitle = "Animation Card",
+                Image = new ThumbnailUrl
+                {
+                    Url = "https://docs.microsoft.com/en-us/bot-framework/media/how-it-works/architecture-resize.png"
+                },
+                Media = new List<MediaUrl>
+                {
+                    new MediaUrl()
+                    {
+                        Url = "http://i.giphy.com/Ki55RUbOV5njy.gif"
+                    }
+                }
+            };
+
+            return animationCard.ToAttachment();
+        }
+
 
 
         // -------------------------------------------
@@ -117,6 +142,7 @@ namespace Microsoft.Bot.Sample.LuisBot
                 {
                     if (item.Type.Equals("TrackingID"))
                     {
+                        GetInternetAttachment();
                         await context.PostAsync($"Obrigada pelo número de identificação. Vou averiguar onde está a sua encomenda \n You have reached {result.Intents[0].Intent}");
                         isTrackId = true;
                         break;
@@ -125,6 +151,7 @@ namespace Microsoft.Bot.Sample.LuisBot
 
                 if (!isTrackId)
                 {
+                    GetAnimationCard();
                     await context.PostAsync($"Por favor insira o número de identificação da sua encomenda. \n You have reached {result.Intents[0].Intent}.");
                     context.Wait(MessageReceived);
                 }
