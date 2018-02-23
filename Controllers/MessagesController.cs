@@ -7,6 +7,7 @@ using Microsoft.Bot.Builder.Dialogs;
 using System.Web.Http.Description;
 using System.Net.Http;
 using System.Diagnostics;
+using System.Linq;
 
 namespace Microsoft.Bot.Sample.LuisBot
 {
@@ -47,12 +48,18 @@ namespace Microsoft.Bot.Sample.LuisBot
                 // Not available in all channels
 
                 // Create a connector between bot and user and then create a reply (CreateReply method)
-                var connector = new ConnectorClient(new Uri(message.ServiceUrl));
-                Activity reply = message.CreateReply($"Bem vindo/a!");
-                
-                // Sends the reply created to the user (ReplyToActivity method)
-                connector.Conversations.ReplyToActivityAsync(reply);
+                IConversationUpdateActivity update = message;
+                if (update.MembersAdded != null && update.MembersAdded.Any())
+                {
+                    foreach (var newMember in update.MembersAdded)
+                    {
+                        var connector = new ConnectorClient(new Uri(message.ServiceUrl));
+                        Activity reply = message.CreateReply($"Bem vindo!");
 
+                        // Sends the reply created to the user (ReplyToActivity method)
+                        connector.Conversations.ReplyToActivityAsync(reply);
+                    }
+                }
             }
             else if (message.Type == ActivityTypes.ContactRelationUpdate)
             {
