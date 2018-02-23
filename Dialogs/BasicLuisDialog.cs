@@ -25,13 +25,10 @@ namespace Microsoft.Bot.Sample.LuisBot
         {
         }
 
+
+
         // ---------------------------------------------------
 
-        /*public async Task StartAsync(IDialogContext context)
-        {
-            await this.ShowImageAttachment(context);
-            
-        } */
 
         public async Task ShowImageAttachment(IDialogContext context)
         {
@@ -64,7 +61,7 @@ namespace Microsoft.Bot.Sample.LuisBot
         {
             var animationCard = new AnimationCard
             {
-                Title = "Que encomenda?",
+                Title = "wat",
                 Subtitle = "Woof?",
                 Image = new ThumbnailUrl
                 {
@@ -95,12 +92,23 @@ namespace Microsoft.Bot.Sample.LuisBot
         // Go to https://luis.ai and create a new intent, then train/publish your luis app.
         // Finally replace "Gretting" with the name of your newly created intent in the following handler
         [LuisIntent("FindOrder")]
-        public async Task FindOrderIntent(IDialogContext context, LuisResult result)
+        public async Task FindOrderIntent(IDialogContext context, IAwaitable<object> result)
         {
-            await this.ShowLuisResult(context, result);
-
-            //await context.Forward(new FindOrderDialog(), ResumeAfterFindOrderDialog, result, CancellationToken.None);
+            
+            //await this.ShowLuisResult(context, result);
+            await context.Forward(new FindOrderDialog(), this.ResumeAfterFindOrderDialog, result, CancellationToken.None);
      
+        }
+
+
+        private async Task ResumeAfterFindOrderDialog(IDialogContext context, IAwaitable<object> result)
+        {
+            var resultFindOrder = await result;
+
+            await context.PostAsync($"New order dialog just told me this: {resultFindOrder}");
+
+            // Again, wait for the next message from the user.
+            //context.Wait(this.MessageReceivedAsync);
         }
 
         [LuisIntent("Cancel")]
