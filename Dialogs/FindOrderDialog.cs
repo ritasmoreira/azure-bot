@@ -99,26 +99,20 @@ namespace LuisBot.Dialogs
             };
 
             await context.PostAsync(message);
-            context.Wait(MessageReceived);
+            context.Wait(MessageReceived);  // esta a ir atras buscar a resposta enquanto devia tira-la logo daqui
+
 
             if (message.Value.Equals("Sim"))
             {
                 await context.PostAsync($"A sua encomenda será cancelada. Obrigado  \n You have reached {result.Intents[0].Intent}.");
-                context.Done(true);
+                context.Wait(MessageReceived);
 
             }
             else
             {
-                context.Done(true);
+                context.Wait(MessageReceived);
             }
-
-            
-
-            await context.PostAsync($"Estou a fazer um debug");
-
-            
-
-
+            context.Done(true);
 
         }
     }
