@@ -64,17 +64,17 @@ namespace Microsoft.Bot.Sample.LuisBot
         {
             var animationCard = new AnimationCard
             {
-                Title = "Microsoft Bot Framework",
-                Subtitle = "Animation Card",
+                Title = "É já a seguir",
+                Subtitle = "Choo choo",
                 Image = new ThumbnailUrl
                 {
-                    Url = "https://docs.microsoft.com/en-us/bot-framework/media/how-it-works/architecture-resize.png"
+                    Url = "https://pbs.twimg.com/profile_images/828073361397932032/eKTigt-2_400x400.jpg"
                 },
                 Media = new List<MediaUrl>
                 {
                     new MediaUrl()
                     {
-                        Url = "http://i.giphy.com/Ki55RUbOV5njy.gif"
+                        Url = "https://www.reddit.com/r/reactiongifs/comments/7ytxqb/mrw_they_say_im_a_good_boy_but_i_know_what_ive/"
                     }
                 }
             };
@@ -143,13 +143,6 @@ namespace Microsoft.Bot.Sample.LuisBot
                     if (item.Type.Equals("TrackingID"))
                     {
 
-                        var message = context.MakeMessage();
-                        var attachment = GetAnimationCard();
-
-                        message.Attachments.Add(attachment);
-
-                        await context.PostAsync(message);
-
                         await context.PostAsync($"Obrigada pelo número de identificação. Vou averiguar onde está a sua encomenda \n You have reached {result.Intents[0].Intent}");
                         isTrackId = true;
                         break;
@@ -158,7 +151,14 @@ namespace Microsoft.Bot.Sample.LuisBot
 
                 if (!isTrackId)
                 {
-                    GetAnimationCard();
+
+                    var message = context.MakeMessage();
+                    var attachment = GetAnimationCard();
+
+                    message.Attachments.Add(attachment);
+
+                    await context.PostAsync(message);
+
                     await context.PostAsync($"Por favor insira o número de identificação da sua encomenda. \n You have reached {result.Intents[0].Intent}.");
                     context.Wait(MessageReceived);
                 }
