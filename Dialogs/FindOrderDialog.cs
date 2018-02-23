@@ -44,8 +44,7 @@ namespace LuisBot.Dialogs
             return animationCard.ToAttachment();
         }
 
-
-
+        
 
         [LuisIntent("FindOrder")]
         private async Task FindOrderIntent(IDialogContext context, LuisResult result)
@@ -86,7 +85,25 @@ namespace LuisBot.Dialogs
         [LuisIntent("Cancel")]
         private async Task CancelIntent(IDialogContext context, LuisResult result)
         {
-             await context.PostAsync($"A sua encomenda será cancelada. Obrigado  \n You have reached {result.Intents[0].Intent}.");
+            //await context.PostAsync($"Tem a certeza que pretende cancelar a sua encomenda?");
+
+            var message = context.MakeMessage();
+            message.Text = "Tem a certeza que pretende cancelar a sua encomenda?";
+            message.SuggestedActions = new SuggestedActions()
+            {
+                Actions = new List<CardAction>()
+                {
+                    new CardAction(){ Title = "Sim", Type=ActionTypes.ImBack, Value="Sim" },
+                    new CardAction(){ Title = "Não", Type=ActionTypes.ImBack, Value="Não" },
+                }
+            };
+
+            await context.PostAsync(message);
+
+            await context.PostAsync($"A sua encomenda será cancelada. Obrigado  \n You have reached {result.Intents[0].Intent}.");
+
+            context.Wait(MessageReceived);
+
 
         }
     }
