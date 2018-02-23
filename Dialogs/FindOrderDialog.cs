@@ -19,14 +19,42 @@ namespace LuisBot.Dialogs
         {
         }
 
+
+
+        // Animation Card
+        private static Attachment GetAnimationCard()
+        {
+            var animationCard = new AnimationCard
+            {
+                Title = "wat",
+                Subtitle = "Woof?",
+                Image = new ThumbnailUrl
+                {
+                    Url = "https://www.caninecoaching.com/wp-content/uploads/2014/03/8693_537261246320967_418001381_n.jpg"
+                },
+                Media = new List<MediaUrl>
+                {
+                    new MediaUrl()
+                    {
+                        Url = "https://media.giphy.com/media/51Uiuy5QBZNkoF3b2Z/giphy.gif"
+                    }
+                }
+            };
+
+            return animationCard.ToAttachment();
+        }
+
+
+
+
         [LuisIntent("FindOrder")]
         private async Task FindOrderIntent(IDialogContext context, LuisResult result)
         {
             bool isTrackId = false;
             IList<EntityRecommendation> listOfEntitiesFound = result.Entities;
 
-            if (result.Intents[0].Intent.Equals("FindOrder"))
-            {
+            //if (result.Intents[0].Intent.Equals("FindOrder"))
+            //{
                 foreach (EntityRecommendation item in listOfEntitiesFound)
                 {
                     if (item.Type.Equals("TrackingID"))
@@ -34,6 +62,8 @@ namespace LuisBot.Dialogs
 
                         await context.PostAsync($"Obrigada pelo número de identificação. Vou averiguar onde está a sua encomenda \n You have reached {result.Intents[0].Intent}");
                         isTrackId = true;
+
+                        // VVV important
                         context.Done(true);
                         break;
                     }
@@ -52,8 +82,18 @@ namespace LuisBot.Dialogs
                     await context.PostAsync($"Por favor insira o número de identificação da sua encomenda. \n You have reached {result.Intents[0].Intent}.");
                     context.Wait(MessageReceived);
                 }
-            }
+            //}
           
+        }
+
+        [LuisIntent("Cancel")]
+        private async Task CancelIntent(IDialogContext context, LuisResult result)
+        {
+            //if(result.Intents[0].Intent.Equals("Cancel"))
+            //{
+                await context.PostAsync($"A sua encomenda será cancelada. Obrigado  \n You have reached {result.Intents[0].Intent}.");
+
+            //}
         }
     }
 }

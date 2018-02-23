@@ -56,28 +56,6 @@ namespace Microsoft.Bot.Sample.LuisBot
 
 
 
-        // Animation Card
-        private static Attachment GetAnimationCard()
-        {
-            var animationCard = new AnimationCard
-            {
-                Title = "wat",
-                Subtitle = "Woof?",
-                Image = new ThumbnailUrl
-                {
-                    Url = "https://www.caninecoaching.com/wp-content/uploads/2014/03/8693_537261246320967_418001381_n.jpg"
-                },
-                Media = new List<MediaUrl>
-                {
-                    new MediaUrl()
-                    {
-                        Url = "https://media.giphy.com/media/51Uiuy5QBZNkoF3b2Z/giphy.gif"
-                    }
-                }
-            };
-
-            return animationCard.ToAttachment();
-        }
 
 
 
@@ -132,52 +110,23 @@ namespace Microsoft.Bot.Sample.LuisBot
             // (At this point, new order dialog has finished and returned some value to use within the root dialog.)
             var resultFromNewOrder = await result;
 
-            await context.PostAsync($"New order dialog just told me this: {resultFromNewOrder}");
+            //await context.PostAsync($"New order dialog just told me this: {resultFromNewOrder}");
 
             // Again, wait for the next message from the user.
            // context.Wait(this.MessageReceivedAsync);
         }
         
-
+        
         private async Task ShowLuisResult(IDialogContext context, LuisResult result) 
         {
-            bool isTrackId = false;
             IList<EntityRecommendation> listOfEntitiesFound = result.Entities;
-            // await context.PostAsync($"Result.Entities {result.Entities[0].Type}"); Também funciona
-
-            if (result.Intents[0].Intent.Equals("FindOrder"))
-            {
-                foreach (EntityRecommendation item in listOfEntitiesFound)
-                {
-                    if (item.Type.Equals("TrackingID"))
-                    {
-
-                        await context.PostAsync($"Obrigada pelo número de identificação. Vou averiguar onde está a sua encomenda \n You have reached {result.Intents[0].Intent}");
-                        isTrackId = true;
-                        break;
-                    }
-                }
-
-                if (!isTrackId)
-                {
-
-                    var message = context.MakeMessage();
-                    var attachment = GetAnimationCard();
-
-                    message.Attachments.Add(attachment);
-
-                    await context.PostAsync(message);
-
-                    await context.PostAsync($"Por favor insira o número de identificação da sua encomenda. \n You have reached {result.Intents[0].Intent}.");
-                    context.Wait(MessageReceived);
-                }
-            } 
+            
             if(result.Intents[0].Intent.Equals("Cancel"))
             {
                 await context.PostAsync($"A sua encomenda será cancelada. Obrigado  \n You have reached {result.Intents[0].Intent}.");
 
             }
-        }
+        } 
 
     }
 }
