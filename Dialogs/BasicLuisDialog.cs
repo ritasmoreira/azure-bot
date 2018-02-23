@@ -89,7 +89,9 @@ namespace Microsoft.Bot.Sample.LuisBot
         [LuisIntent("Cancel")]
         public async Task CancelIntent(IDialogContext context, LuisResult result)
         {
-            await this.ShowLuisResult(context, result);
+            //await this.ShowLuisResult(context, result);
+            await context.Forward(new FindOrderDialog(), this.ResumeAfterFindOrderDialog, message, CancellationToken.None);
+
         }
 
         [LuisIntent("Help")]
