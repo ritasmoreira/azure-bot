@@ -59,7 +59,7 @@ namespace Microsoft.Bot.Sample.LuisBot
                         // if the bot is added, then 
                         if (member.Id == iConversationUpdated.Recipient.Id)
                         {
-                            var reply = ((Activity)iConversationUpdated).CreateReply($"Bem vindo/a!");
+                            var reply = ((Activity)iConversationUpdated).CreateReply($"Bem vindo/a ao bot das encomendas!");
                             connector.Conversations.ReplyToActivityAsync(reply);
                         }
                     }

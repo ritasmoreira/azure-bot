@@ -54,12 +54,8 @@ namespace Microsoft.Bot.Sample.LuisBot
             };
         }
 
+        // -----------------------------------------------
 
-
-
-
-
-        // -------------------------------------------
 
         [LuisIntent("None")]
         public async Task NoneIntent(IDialogContext context, LuisResult result)
@@ -82,9 +78,9 @@ namespace Microsoft.Bot.Sample.LuisBot
 
         private async Task ResumeAfterFindOrderDialog(IDialogContext context, IAwaitable<object> result)
         {
-            var resultFindOrder = await result;
+            // var resultFindOrder = await result;
 
-            await context.PostAsync($"New order dialog just told me this: {resultFindOrder}");
+            // await context.PostAsync($"New order dialog just told me this: {resultFindOrder}");
 
             // Again, wait for the next message from the user.
             //context.Wait(this.MessageReceivedAsync);
@@ -119,13 +115,7 @@ namespace Microsoft.Bot.Sample.LuisBot
         
         private async Task ShowLuisResult(IDialogContext context, LuisResult result) 
         {
-            IList<EntityRecommendation> listOfEntitiesFound = result.Entities;
-            
-            if(result.Intents[0].Intent.Equals("Cancel"))
-            {
-                await context.PostAsync($"A sua encomenda será cancelada. Obrigado  \n You have reached {result.Intents[0].Intent}.");
 
-            }
         } 
 
     }
