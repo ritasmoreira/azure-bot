@@ -103,9 +103,11 @@ namespace LuisBot.Dialogs
 
             if (message.Value.Equals("Sim")) {
                 await context.PostAsync($"A sua encomenda será cancelada. Obrigado  \n You have reached {result.Intents[0].Intent}.");
+                context.Done(true);
+
             } else
             {
-                context.Wait(MessageReceived);
+                context.Done(true);
             }
 
 
