@@ -92,11 +92,12 @@ namespace Microsoft.Bot.Sample.LuisBot
         // Go to https://luis.ai and create a new intent, then train/publish your luis app.
         // Finally replace "Gretting" with the name of your newly created intent in the following handler
         [LuisIntent("FindOrder")]
-        public async Task FindOrderIntent(IDialogContext context, IAwaitable<object> result)
+        public async Task FindOrderIntent(IDialogContext context, IAwaitable<IMessageActivity> activity, LuisResult result)
         {
-            
+
             //await this.ShowLuisResult(context, result);
-            await context.Forward(new FindOrderDialog(), this.ResumeAfterFindOrderDialog, result, CancellationToken.None);
+            var message = await activity;
+            await context.Forward(new FindOrderDialog(), this.ResumeAfterFindOrderDialog, message, CancellationToken.None);
      
         }
 

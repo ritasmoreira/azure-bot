@@ -34,6 +34,7 @@ namespace LuisBot.Dialogs
 
                         await context.PostAsync($"Obrigada pelo número de identificação. Vou averiguar onde está a sua encomenda \n You have reached {result.Intents[0].Intent}");
                         isTrackId = true;
+                        context.Done(true);
                         break;
                     }
                 }
