@@ -45,9 +45,15 @@ namespace Microsoft.Bot.Sample.LuisBot
                 // Handle conversation state changes, like members being added and removed
                 // Use Activity.MembersAdded and Activity.MembersRemoved and Activity.Action for info
                 // Not available in all channels
-                //Activity reply = message.CreateReply($"Bem vindo!");
 
-                IConversationUpdateActivity iConversationUpdated = message as IConversationUpdateActivity;
+
+                var connector = new ConnectorClient(new Uri(message.ServiceUrl));
+                Activity reply = message.CreateReply($"Bem vindo!");
+
+                
+                connector.Conversations.ReplyToActivityAsync(reply);
+
+                /* IConversationUpdateActivity iConversationUpdated = message as IConversationUpdateActivity;
                 if (iConversationUpdated != null)
                 {
                     ConnectorClient connector = new ConnectorClient(new System.Uri(message.ServiceUrl));
@@ -57,11 +63,11 @@ namespace Microsoft.Bot.Sample.LuisBot
                         // if the bot is added, then 
                         if (member.Id == iConversationUpdated.Recipient.Id)
                         {
-                            var reply = ((Activity)iConversationUpdated).CreateReply($"Hey I am a chatbot");
+                            var reply = ((Activity)iConversationUpdated).CreateReply($"Bem vindo/a!");
                             connector.Conversations.ReplyToActivityAsync(reply);
                         }
                     }
-                }
+                } */
             }
             else if (message.Type == ActivityTypes.ContactRelationUpdate)
             {
