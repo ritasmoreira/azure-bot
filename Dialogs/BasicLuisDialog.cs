@@ -29,25 +29,11 @@ namespace Microsoft.Bot.Sample.LuisBot
 
         public async Task StartAsync(IDialogContext context)
         {
-            context.Wait(this.MessageReceivedAsync);
+            await this.ShowImageAttachment(context);
         }
 
-
-        public async virtual Task MessageReceivedAsync(IDialogContext context, IAwaitable<IMessageActivity> result)
+        public async Task ShowImageAttachment(IDialogContext context)
         {
-            var message = await result;
-
-            var welcomeMessage = context.MakeMessage();
-            welcomeMessage.Text = "Bem vindo/a!";
-
-            await context.PostAsync(welcomeMessage);
-
-            //await this.ShowImageAttachment(context, welcomeMessage);
-        }
-        /*
-        public async Task ShowImageAttachment(IDialogContext context, IAwaitable<string> argument)
-        {
-            var message = await argument;
 
             var replyMessage = context.MakeMessage();
 
@@ -70,7 +56,7 @@ namespace Microsoft.Bot.Sample.LuisBot
             };
         }
 
-    */
+    
 
 
         // -------------------------------------------

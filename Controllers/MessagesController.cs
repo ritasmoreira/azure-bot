@@ -46,28 +46,13 @@ namespace Microsoft.Bot.Sample.LuisBot
                 // Use Activity.MembersAdded and Activity.MembersRemoved and Activity.Action for info
                 // Not available in all channels
 
-
+                // Create a connector between bot and user and then create a reply (CreateReply method)
                 var connector = new ConnectorClient(new Uri(message.ServiceUrl));
-                Activity reply = message.CreateReply($"Bem vindo!");
-
+                Activity reply = message.CreateReply($"Bem vindo/a!");
                 
+                // Sends the reply created to the user (ReplyToActivity method)
                 connector.Conversations.ReplyToActivityAsync(reply);
 
-                /* IConversationUpdateActivity iConversationUpdated = message as IConversationUpdateActivity;
-                if (iConversationUpdated != null)
-                {
-                    ConnectorClient connector = new ConnectorClient(new System.Uri(message.ServiceUrl));
-
-                    foreach (var member in iConversationUpdated.MembersAdded ?? System.Array.Empty<ChannelAccount>())
-                    {
-                        // if the bot is added, then 
-                        if (member.Id == iConversationUpdated.Recipient.Id)
-                        {
-                            var reply = ((Activity)iConversationUpdated).CreateReply($"Bem vindo/a!");
-                            connector.Conversations.ReplyToActivityAsync(reply);
-                        }
-                    }
-                } */
             }
             else if (message.Type == ActivityTypes.ContactRelationUpdate)
             {
