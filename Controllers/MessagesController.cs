@@ -7,7 +7,6 @@ using Microsoft.Bot.Builder.Dialogs;
 using System.Web.Http.Description;
 using System.Net.Http;
 using System.Diagnostics;
-using System.Linq;
 
 namespace Microsoft.Bot.Sample.LuisBot
 {
@@ -46,18 +45,23 @@ namespace Microsoft.Bot.Sample.LuisBot
                 // Handle conversation state changes, like members being added and removed
                 // Use Activity.MembersAdded and Activity.MembersRemoved and Activity.Action for info
                 // Not available in all channels
+               // Activity reply = message.CreateReply($"Bem vindo!");
 
-                // Create a connector between bot and user and then create a reply (CreateReply method)
-                IConversationUpdateActivity update = message;
-                if (update.MembersAdded != null && update.MembersAdded.Any())
+                
+               // await connector.Conversations.ReplyToActivityAsync(reply);
+                IConversationUpdateActivity iConversationUpdated = message as IConversationUpdateActivity;
+                if (iConversationUpdated != null)
                 {
-                    foreach (var newMember in update.MembersAdded)
-                    {
-                        var connector = new ConnectorClient(new Uri(message.ServiceUrl));
-                        Activity reply = message.CreateReply($"Bem vindo!");
+                    ConnectorClient connector = new ConnectorClient(new System.Uri(message.ServiceUrl));
 
-                        // Sends the reply created to the user (ReplyToActivity method)
-                        connector.Conversations.ReplyToActivityAsync(reply);
+                    foreach (var member in iConversationUpdated.MembersAdded ?? System.Array.Empty<ChannelAccount>())
+                    {
+                        // if the bot is added, then 
+                        if (member.Id == iConversationUpdated.Recipient.Id)
+                        {
+                            var reply = ((Activity)iConversationUpdated).CreateReply($"Bem vindo/a!");
+                            connector.Conversations.ReplyToActivityAsync(reply);
+                        }
                     }
                 }
             }
