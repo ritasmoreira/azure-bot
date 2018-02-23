@@ -64,17 +64,17 @@ namespace Microsoft.Bot.Sample.LuisBot
         {
             var animationCard = new AnimationCard
             {
-                Title = "Ok.....",
-                Subtitle = "Woof",
+                Title = "Que encomenda?",
+                Subtitle = "Woof?",
                 Image = new ThumbnailUrl
                 {
-                    Url = "https://www.reddit.com/r/reactiongifs/comments/7ytxqb/mrw_they_say_im_a_good_boy_but_i_know_what_ive/"
+                    Url = "https://www.caninecoaching.com/wp-content/uploads/2014/03/8693_537261246320967_418001381_n.jpg"
                 },
                 Media = new List<MediaUrl>
                 {
                     new MediaUrl()
                     {
-                        Url = "https://www.reddit.com/r/reactiongifs/comments/7ytxqb/mrw_they_say_im_a_good_boy_but_i_know_what_ive/"
+                        Url = "https://media.giphy.com/media/51Uiuy5QBZNkoF3b2Z/giphy.gif"
                     }
                 }
             };
