@@ -144,26 +144,10 @@ namespace Microsoft.Bot.Sample.LuisBot
                     {
 
                         var message = context.MakeMessage();
+                        var attachment = GetAnimationCard();
 
-                        var animationCard = new AnimationCard
-                        {
-                            Title = "Microsoft Bot Framework",
-                            Subtitle = "Animation Card",
-                            Image = new ThumbnailUrl
-                            {
-                                Url = "https://docs.microsoft.com/en-us/bot-framework/media/how-it-works/architecture-resize.png"
-                            },
-                            Media = new List<MediaUrl>
-                        {
-                        new MediaUrl()
-                        {
-                            Url = "http://i.giphy.com/Ki55RUbOV5njy.gif"
-                        }
-                        }
-                            };
+                        message.Attachments.Add(attachment);
 
-                        message.Attachments = new List<Attachment>();
-                        message.Attachments.Add(animationCard.ToAttachment());
                         await context.PostAsync(message);
 
                         await context.PostAsync($"Obrigada pelo número de identificação. Vou averiguar onde está a sua encomenda \n You have reached {result.Intents[0].Intent}");
