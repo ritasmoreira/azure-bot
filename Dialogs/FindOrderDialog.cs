@@ -109,7 +109,7 @@ namespace LuisBot.Dialogs
                 await context.PostAsync($"A sua encomenda continua a caminho. Obrigado");
             }
 
-            context.Done(true);
+            
               
 
             //PromptDialog.Choice(context, this.OnOptionSelected, new List<string>() { "Sim","Não"}, "Tem a certeza que quer cancelar a sua encomenda?", "A resposta que deu não é válida. Quer cancelar a encomenda?");
