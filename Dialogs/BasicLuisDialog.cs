@@ -69,9 +69,10 @@ namespace Microsoft.Bot.Sample.LuisBot
         [LuisIntent("FindOrder")]
         public async Task FindOrderIntent(IDialogContext context, IAwaitable<IMessageActivity> activity, LuisResult result)
         {
-            await context.PostAsync($"Find ORder Intent");
+            
             //await this.ShowLuisResult(context, result);
             var message = await activity;
+            await context.PostAsync($"Find ORder Intent");
             await context.Forward(new FindOrderDialog(), this.ResumeAfterFindOrderDialog, message, CancellationToken.None);
      
         }
@@ -90,15 +91,17 @@ namespace Microsoft.Bot.Sample.LuisBot
         [LuisIntent("Cancel")]
         public async Task CancelIntent(IDialogContext context, IAwaitable<IMessageActivity> activity,  LuisResult result)
         {
-            await context.PostAsync($"Cancel Intent");
+            
             //await this.ShowLuisResult(context, result);
-           var message = await activity;
+            var message = await activity;
+            await context.PostAsync($"Cancel Intent");
             await context.Forward(new FindOrderDialog(), this.ResumeAfterCancelDialog, message, CancellationToken.None);
 
         }
 
         private async Task ResumeAfterCancelDialog(IDialogContext context, IAwaitable<object> result)
         {
+            var message = await result;
             await context.PostAsync($"Resume After Cancel Dialog");
             context.Wait(MessageReceived);
         }
@@ -106,6 +109,7 @@ namespace Microsoft.Bot.Sample.LuisBot
         [LuisIntent("Help")]
         public async Task HelpIntent(IDialogContext context, LuisResult result)
         {
+            
             await context.PostAsync($"Help Intent");
             await this.ShowLuisResult(context, result);
         }
