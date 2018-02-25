@@ -101,7 +101,8 @@ namespace LuisBot.Dialogs
               };
 
             await context.PostAsync(message);
-            if(message.Value.Equals("Sim"))
+            context.Wait(MessageReceived);
+            if (message.Value.Equals("Sim"))
             {
                 await context.PostAsync($"A sua encomenda será cancelada. Obrigado");
             } else if(message.Value.Equals("Não"))
@@ -109,7 +110,7 @@ namespace LuisBot.Dialogs
                 await context.PostAsync($"A sua encomenda continua a caminho. Obrigado");
             }
 
-            
+            context.Done(true);
               
 
             //PromptDialog.Choice(context, this.OnOptionSelected, new List<string>() { "Sim","Não"}, "Tem a certeza que quer cancelar a sua encomenda?", "A resposta que deu não é válida. Quer cancelar a encomenda?");
