@@ -89,7 +89,7 @@ namespace LuisBot.Dialogs
             await context.PostAsync($"CancelIntent dentro do FindOrderDialog");
             //await context.PostAsync($"Tem a certeza que pretende cancelar a sua encomenda?");
 
-            /*  var message = context.MakeMessage();
+              var message = context.MakeMessage();
               message.Text = "Tem a certeza que pretende cancelar a sua encomenda?";
               message.SuggestedActions = new SuggestedActions()
               {
@@ -100,13 +100,19 @@ namespace LuisBot.Dialogs
                   }
               };
 
-              await context.PostAsync(message);
-              // context.Wait(MessageReceived);  // esta a ir atras buscar a resposta enquanto devia tira-la logo daqui
+            await context.PostAsync(message);
+            if(message.Value.Equals("Sim"))
+            {
+                await context.PostAsync($"A sua encomenda será cancelada. Obrigado");
+            } else if(message.Value.Equals("Não"))
+            {
+                await context.PostAsync($"A sua encomenda continua a caminho. Obrigado");
+            }
 
-              await context.PostAsync($"A sua encomenda será cancelada. Obrigado  \n You have reached {result.Intents[0].Intent}.");
-              */
+            context.Done(true);
+              
 
-            PromptDialog.Choice(context, this.OnOptionSelected, new List<string>() { "Sim","Não"}, "Tem a certeza que quer cancelar a sua encomenda?", "A resposta que deu não é válida");
+            //PromptDialog.Choice(context, this.OnOptionSelected, new List<string>() { "Sim","Não"}, "Tem a certeza que quer cancelar a sua encomenda?", "A resposta que deu não é válida. Quer cancelar a encomenda?");
 
 
             /*
@@ -133,7 +139,7 @@ namespace LuisBot.Dialogs
             if(message.Equals("Sim"))
             {
                 await context.PostAsync($"A sua encomenda será cancelada. Obrigado");
-            } else if (message.Equals("Não")) {
+            } else if (message.Equals("Não") || message.Equals("nao")) {
                 await context.PostAsync($"A sua encomenda continua a caminho. Obrigado");
             }
 
