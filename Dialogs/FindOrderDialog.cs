@@ -98,22 +98,24 @@ namespace LuisBot.Dialogs
                 }
             };
 
-            await context.PostAsync(message);
-           // context.Wait(MessageReceived);  // esta a ir atras buscar a resposta enquanto devia tira-la logo daqui
+            //await context.PostAsync(message);
+            // context.Wait(MessageReceived);  // esta a ir atras buscar a resposta enquanto devia tira-la logo daqui
+
+            await context.PostAsync($"A sua encomenda será cancelada. Obrigado  \n You have reached {result.Intents[0].Intent}.");
+
 
 
             if (message.Value.Equals("Sim"))
             {
                 await context.PostAsync($"A sua encomenda será cancelada. Obrigado  \n You have reached {result.Intents[0].Intent}.");
-                context.Wait(MessageReceived);
 
             }
             else
             {
-                context.Wait(MessageReceived);
 
             }
             
+
 
         }
     }
