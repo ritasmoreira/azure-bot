@@ -106,7 +106,7 @@ namespace LuisBot.Dialogs
               await context.PostAsync($"A sua encomenda será cancelada. Obrigado  \n You have reached {result.Intents[0].Intent}.");
               */
 
-            PromptDialog.Choice(context, this.OnOptionSelected, new List<string>() { "A"," B "}, "Tem a certeza que quer cancelar a sua encomenda?", "A resposta que deu não é válida");
+            PromptDialog.Choice(context, this.OnOptionSelected, new List<string>() { "Sim","Não"}, "Tem a certeza que quer cancelar a sua encomenda?", "A resposta que deu não é válida");
 
 
             /*
@@ -126,7 +126,17 @@ namespace LuisBot.Dialogs
 
         public async Task OnOptionSelected(IDialogContext context, IAwaitable<object> result)
         {
+            var message = await result;
+
             await context.PostAsync($"OptionsSelected");
+
+            if(message.Equals("Sim"))
+            {
+                await context.PostAsync($"A sua encomenda será cancelada. Obrigado");
+            } else if (message.Equals("Não")) {
+                await context.PostAsync($"A sua encomenda continua a caminho. Obrigado");
+            }
+
             context.Done(true);
         }
     }
