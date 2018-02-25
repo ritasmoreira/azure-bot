@@ -107,18 +107,7 @@ namespace Microsoft.Bot.Sample.LuisBot
         }
 
        
-
-        private async Task ResumeAfterFindOrderDialog(IDialogContext context, IAwaitable<string> result)
-        {
-            // Store the value that NewOrderDialog returned. 
-            // (At this point, new order dialog has finished and returned some value to use within the root dialog.)
-            var resultFromNewOrder = await result;
-
-            //await context.PostAsync($"New order dialog just told me this: {resultFromNewOrder}");
-
-            // Again, wait for the next message from the user.
-           // context.Wait(this.MessageReceivedAsync);
-        }
+        
         
         
         private async Task ShowLuisResult(IDialogContext context, LuisResult result) 

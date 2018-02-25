@@ -87,7 +87,7 @@ namespace LuisBot.Dialogs
         {
             //await context.PostAsync($"Tem a certeza que pretende cancelar a sua encomenda?");
 
-            var message = context.MakeMessage();
+          /*  var message = context.MakeMessage();
             message.Text = "Tem a certeza que pretende cancelar a sua encomenda?";
             message.SuggestedActions = new SuggestedActions()
             {
@@ -100,14 +100,14 @@ namespace LuisBot.Dialogs
 
             await context.PostAsync(message);
             // context.Wait(MessageReceived);  // esta a ir atras buscar a resposta enquanto devia tira-la logo daqui
-
+            
             await context.PostAsync($"A sua encomenda será cancelada. Obrigado  \n You have reached {result.Intents[0].Intent}.");
-
+            */
 
             PromptDialog.Choice(context, this.OnOptionSelected, new List<string>() { "A"," B "}, "Tem a certeza que quer cancelar a sua encomenda?", "A resposta que deu não é válida");
 
 
-
+            /*
             if (message.Value.Equals("Sim"))
             {
                 await context.PostAsync($"A sua encomenda será cancelada. Obrigado  \n You have reached {result.Intents[0].Intent}.");
@@ -116,7 +116,7 @@ namespace LuisBot.Dialogs
             else
             {
 
-            }
+            } */
             
 
 
