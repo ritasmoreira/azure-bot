@@ -97,7 +97,7 @@ namespace Microsoft.Bot.Sample.LuisBot
 
         private async Task ResumeAfterCancelDialog(IDialogContext context, IAwaitable<object> result)
         {
-            // ir buscar 
+            context.Wait(MessageReceived);
         }
 
         [LuisIntent("Help")]
