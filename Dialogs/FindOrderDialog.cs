@@ -6,6 +6,7 @@ using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.Luis;
 using Microsoft.Bot.Builder.Luis.Models;
 using Microsoft.Bot.Connector;
+using Microsoft.Bot.Sample.LuisBot;
 
 namespace LuisBot.Dialogs
 {
@@ -18,7 +19,6 @@ namespace LuisBot.Dialogs
           domain: ConfigurationManager.AppSettings["LuisAPIHostName"])))
         {
         }
-
 
 
         // Animation Card
@@ -98,10 +98,13 @@ namespace LuisBot.Dialogs
                 }
             };
 
-            //await context.PostAsync(message);
+            await context.PostAsync(message);
             // context.Wait(MessageReceived);  // esta a ir atras buscar a resposta enquanto devia tira-la logo daqui
 
             await context.PostAsync($"A sua encomenda será cancelada. Obrigado  \n You have reached {result.Intents[0].Intent}.");
+
+
+            PromptDialog.Choice(context, this.OnOptionSelected, new List<string>() { "A"," B "}, "Tem a certeza que quer cancelar a sua encomenda?", "A resposta que deu não é válida");
 
 
 
@@ -117,6 +120,11 @@ namespace LuisBot.Dialogs
             
 
 
+        }
+
+        public async Task OnOptionSelected(IDialogContext context, IAwaitable<object> result)
+        {
+            context.Done(true);
         }
     }
 }
