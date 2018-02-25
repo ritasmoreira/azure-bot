@@ -88,7 +88,7 @@ namespace LuisBot.Dialogs
         {
             await context.PostAsync($"CancelIntent dentro do FindOrderDialog");
             //await context.PostAsync($"Tem a certeza que pretende cancelar a sua encomenda?");
-
+            /*
               var message = context.MakeMessage();
               message.Text = "Tem a certeza que pretende cancelar a sua encomenda?";
               message.SuggestedActions = new SuggestedActions()
@@ -101,7 +101,9 @@ namespace LuisBot.Dialogs
               };
 
             await context.PostAsync(message);
+
             context.Wait(MessageReceived);
+
             if (message.Value.Equals("Sim"))
             {
                 await context.PostAsync($"A sua encomenda será cancelada. Obrigado");
@@ -110,24 +112,10 @@ namespace LuisBot.Dialogs
                 await context.PostAsync($"A sua encomenda continua a caminho. Obrigado");
             }
 
-            context.Done(true);
+            //context.Done(true);
               
-
-            //PromptDialog.Choice(context, this.OnOptionSelected, new List<string>() { "Sim","Não"}, "Tem a certeza que quer cancelar a sua encomenda?", "A resposta que deu não é válida. Quer cancelar a encomenda?");
-
-
-            /*
-            if (message.Value.Equals("Sim"))
-            {
-                await context.PostAsync($"A sua encomenda será cancelada. Obrigado  \n You have reached {result.Intents[0].Intent}.");
-
-            }
-            else
-            {
-
-            } */
-            
-
+            */
+            PromptDialog.Choice(context, this.OnOptionSelected, new List<string>() { "Sim","Não"}, "Tem a certeza que quer cancelar a sua encomenda?", "A resposta que deu não é válida. Quer cancelar a encomenda?");
 
         }
 
