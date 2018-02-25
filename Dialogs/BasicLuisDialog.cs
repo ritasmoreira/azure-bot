@@ -60,6 +60,7 @@ namespace Microsoft.Bot.Sample.LuisBot
         [LuisIntent("None")]
         public async Task NoneIntent(IDialogContext context, LuisResult result)
         {
+            await context.PostAsync($"None Intent");
             await this.ShowLuisResult(context, result);
         }
 
@@ -68,7 +69,7 @@ namespace Microsoft.Bot.Sample.LuisBot
         [LuisIntent("FindOrder")]
         public async Task FindOrderIntent(IDialogContext context, IAwaitable<IMessageActivity> activity, LuisResult result)
         {
-
+            await context.PostAsync($"Find ORder Intent");
             //await this.ShowLuisResult(context, result);
             var message = await activity;
             await context.Forward(new FindOrderDialog(), this.ResumeAfterFindOrderDialog, message, CancellationToken.None);
@@ -89,20 +90,23 @@ namespace Microsoft.Bot.Sample.LuisBot
         [LuisIntent("Cancel")]
         public async Task CancelIntent(IDialogContext context, IAwaitable<IMessageActivity> activity,  LuisResult result)
         {
+            await context.PostAsync($"Cancel Intent");
             //await this.ShowLuisResult(context, result);
-            var message = await activity;
+           var message = await activity;
             await context.Forward(new FindOrderDialog(), this.ResumeAfterCancelDialog, message, CancellationToken.None);
 
         }
 
         private async Task ResumeAfterCancelDialog(IDialogContext context, IAwaitable<object> result)
         {
+            await context.PostAsync($"Resume After Cancel Dialog");
             context.Wait(MessageReceived);
         }
 
         [LuisIntent("Help")]
         public async Task HelpIntent(IDialogContext context, LuisResult result)
         {
+            await context.PostAsync($"Help Intent");
             await this.ShowLuisResult(context, result);
         }
 
@@ -112,6 +116,7 @@ namespace Microsoft.Bot.Sample.LuisBot
         
         private async Task ShowLuisResult(IDialogContext context, LuisResult result) 
         {
+            await context.PostAsync($"Show Result");
             context.Wait(MessageReceived);
         } 
 

@@ -49,6 +49,7 @@ namespace LuisBot.Dialogs
         [LuisIntent("FindOrder")]
         private async Task FindOrderIntent(IDialogContext context, LuisResult result)
         {
+            await context.PostAsync($"FindOrderIntent dentro do FindOrderDialog");
             bool isTrackId = false;
             IList<EntityRecommendation> listOfEntitiesFound = result.Entities;
 
@@ -85,24 +86,25 @@ namespace LuisBot.Dialogs
         [LuisIntent("Cancel")]
         private async Task CancelIntent(IDialogContext context, LuisResult result)
         {
+            await context.PostAsync($"CancelIntent dentro do FindOrderDialog");
             //await context.PostAsync($"Tem a certeza que pretende cancelar a sua encomenda?");
 
-          /*  var message = context.MakeMessage();
-            message.Text = "Tem a certeza que pretende cancelar a sua encomenda?";
-            message.SuggestedActions = new SuggestedActions()
-            {
-                Actions = new List<CardAction>()
-                {
-                    new CardAction(){ Title = "Sim", Type=ActionTypes.ImBack, Value="Sim" },
-                    new CardAction(){ Title = "Não", Type=ActionTypes.ImBack, Value="Não" },
-                }
-            };
+            /*  var message = context.MakeMessage();
+              message.Text = "Tem a certeza que pretende cancelar a sua encomenda?";
+              message.SuggestedActions = new SuggestedActions()
+              {
+                  Actions = new List<CardAction>()
+                  {
+                      new CardAction(){ Title = "Sim", Type=ActionTypes.ImBack, Value="Sim" },
+                      new CardAction(){ Title = "Não", Type=ActionTypes.ImBack, Value="Não" },
+                  }
+              };
 
-            await context.PostAsync(message);
-            // context.Wait(MessageReceived);  // esta a ir atras buscar a resposta enquanto devia tira-la logo daqui
-            
-            await context.PostAsync($"A sua encomenda será cancelada. Obrigado  \n You have reached {result.Intents[0].Intent}.");
-            */
+              await context.PostAsync(message);
+              // context.Wait(MessageReceived);  // esta a ir atras buscar a resposta enquanto devia tira-la logo daqui
+
+              await context.PostAsync($"A sua encomenda será cancelada. Obrigado  \n You have reached {result.Intents[0].Intent}.");
+              */
 
             PromptDialog.Choice(context, this.OnOptionSelected, new List<string>() { "A"," B "}, "Tem a certeza que quer cancelar a sua encomenda?", "A resposta que deu não é válida");
 
@@ -124,6 +126,7 @@ namespace LuisBot.Dialogs
 
         public async Task OnOptionSelected(IDialogContext context, IAwaitable<object> result)
         {
+            await context.PostAsync($"OptionsSelected");
             context.Done(true);
         }
     }
