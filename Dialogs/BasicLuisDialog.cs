@@ -112,7 +112,7 @@ namespace Microsoft.Bot.Sample.LuisBot
         
         private async Task ShowLuisResult(IDialogContext context, LuisResult result) 
         {
-
+            context.Wait(MessageReceived);
         } 
 
     }
