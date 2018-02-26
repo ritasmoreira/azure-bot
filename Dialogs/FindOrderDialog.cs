@@ -50,11 +50,11 @@ namespace LuisBot.Dialogs
         [LuisIntent("FindOrder")]
         private async Task FindOrderIntent(IDialogContext context, LuisResult result)
         {
-            //await context.PostAsync($"FindOrderIntent dentro do FindOrderDialog");
+            await context.PostAsync($"FindOrderIntent dentro do FindOrderDialog");
             bool isTrackId = false;
             IList<EntityRecommendation> listOfEntitiesFound = result.Entities;
 
-            
+            string trackId;
 
             // Percorre lista de entidades na mensagem recebida e procura por um track Id
             // Caso o encontre, vai guardá-lo 
@@ -62,11 +62,12 @@ namespace LuisBot.Dialogs
             {
                 if (item.Type.Equals("TrackingID"))
                 {
-                    string trackId = item.Entity;
-                    
+                    await context.PostAsync($"Found TrckingID");
+
                     if (!context.UserData.TryGetValue(ContextConstants.TrackId, out trackId))
                     {
-                        context.UserData.SetValue(ContextConstants.TrackId, trackId);
+                        trackId = item.Entity;
+                        context.UserData.SetValue(ContextConstants.TrackId, item.Entity);
                     } 
                     await context.PostAsync($"Obrigada pelo número de identificação. A sua encomenda encontra-se em {context.UserData.GetValue<string>(ContextConstants.Location)} \n You have reached {result.Intents[0].Intent}");
 
