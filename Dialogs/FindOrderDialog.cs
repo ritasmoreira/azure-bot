@@ -62,16 +62,20 @@ namespace LuisBot.Dialogs
             {
                 if (item.Type.Equals("TrackingID"))
                 {
-                    await context.PostAsync($"Found TrckingID and the if returns {context.UserData.TryGetValue(ContextConstants.TrackId, out trackId)}");
 
                     if (!context.UserData.TryGetValue(ContextConstants.TrackId, out trackId))
                     {
+                        await context.PostAsync($"Entrei no tryGetValue");
+
                         trackId = item.Entity;
                         context.UserData.SetValue(ContextConstants.TrackId, item.Entity);
-                    } 
-                    await context.PostAsync($"Obrigada pelo número de identificação. A sua encomenda encontra-se em {context.UserData.GetValue<string>(ContextConstants.Location)} \n You have reached {result.Intents[0].Intent}");
+                        await context.PostAsync($"Estou a espera que o set tenha sido feito");
+                        await context.PostAsync($"O novo valor do track id é {context.UserData.GetValue<string>(ContextConstants.TrackId)}");
+                    }
 
                     await context.PostAsync($"A sua encomenda tem o track ID seguinte: {context.UserData.GetValue<string>(ContextConstants.Location)}");
+                    await context.PostAsync($"Obrigada pelo número de identificação. A sua encomenda encontra-se em {context.UserData.GetValue<string>(ContextConstants.Location)} \n You have reached {result.Intents[0].Intent}");
+
 
                     //await context.PostAsync($"Obrigada pelo número de identificação.");
 
