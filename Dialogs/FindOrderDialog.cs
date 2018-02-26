@@ -92,7 +92,6 @@ namespace LuisBot.Dialogs
                     
 
                     await context.PostAsync($"A sua encomenda tem o track ID seguinte: {context.UserData.GetValue<string>(ContextConstants.TrackId)}");
-                    //await context.PostAsync($"Obrigada pelo número de identificação. A sua encomenda encontra-se em {context.UserData.GetValue<string>(ContextConstants.Location)} \n You have reached {result.Intents[0].Intent}");
                     //await context.PostAsync($"Obrigada pelo número de identificação.");
 
                     isTrackId = true;
