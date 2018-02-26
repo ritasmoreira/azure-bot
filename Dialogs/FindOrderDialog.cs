@@ -62,19 +62,19 @@ namespace LuisBot.Dialogs
             {
                 if (item.Type.Equals("TrackingID"))
                 {
-                    //string trackId = item.Entity;
-                    /*
+                    string trackId = item.Entity;
+                    
                     if (!context.UserData.TryGetValue(ContextConstants.TrackId, out trackId))
                     {
                         context.UserData.SetValue(ContextConstants.TrackId, trackId);
-                    } */
-                    //await context.PostAsync($"Obrigada pelo número de identificação. A sua encomenda encontra-se em {context.UserData.GetValue<string>(ContextConstants.Location)} \n You have reached {result.Intents[0].Intent}");
+                    } 
+                    await context.PostAsync($"Obrigada pelo número de identificação. A sua encomenda encontra-se em {context.UserData.GetValue<string>(ContextConstants.Location)} \n You have reached {result.Intents[0].Intent}");
 
-                   // await context.PostAsync($"A sua encomenda tem o track ID seguinte: {context.UserData.GetValue<string>(ContextConstants.Location)}");
+                    await context.PostAsync($"A sua encomenda tem o track ID seguinte: {context.UserData.GetValue<string>(ContextConstants.Location)}");
 
-                    await context.PostAsync($"Obrigada pelo número de identificação.");
+                    //await context.PostAsync($"Obrigada pelo número de identificação.");
 
-                   isTrackId = true;
+                    isTrackId = true;
 
                     // VVV important
                     context.Done(true);
