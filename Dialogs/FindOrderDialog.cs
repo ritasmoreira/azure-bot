@@ -63,8 +63,13 @@ namespace LuisBot.Dialogs
             {
                 if (item.Type.Equals("TrackingID"))
                 {
+                    await this.TestContext(context, result);
+
+                    /*
                     await context.PostAsync($"Este tem negaçao: {!context.UserData.TryGetValue(ContextConstants.TrackId, out trackId)}");
                     await context.PostAsync($"Estão nao tem negação: {context.UserData.TryGetValue(ContextConstants.TrackId, out trackId)}");
+
+
                     if (!context.UserData.TryGetValue(ContextConstants.TrackId, out trackId))
                     {
                         await context.PostAsync($"Entrei no tryGetValue");
@@ -73,7 +78,7 @@ namespace LuisBot.Dialogs
                         context.UserData.SetValue(ContextConstants.TrackId, item.Entity);
                         await context.PostAsync($"Estou a espera que o set tenha sido feito");
                         await context.PostAsync($"O novo valor do track id é {context.UserData.GetValue<string>(ContextConstants.TrackId)}");
-                    }
+                    } */
 
                     await context.PostAsync($"A sua encomenda tem o track ID seguinte: {context.UserData.GetValue<string>(ContextConstants.Location)}");
                     await context.PostAsync($"Obrigada pelo número de identificação. A sua encomenda encontra-se em {context.UserData.GetValue<string>(ContextConstants.Location)} \n You have reached {result.Intents[0].Intent}");
@@ -139,6 +144,26 @@ namespace LuisBot.Dialogs
             */
             PromptDialog.Choice(context, this.OnOptionSelected, new List<string>() { "Sim","Não"}, "Tem a certeza que quer cancelar a sua encomenda?", "A resposta que deu não é válida. Quer cancelar a encomenda?");
 
+        }
+
+        public async Task TestContext(IDialogContext context, LuisResult result)
+        {
+            IList<EntityRecommendation> listOfEntities = result.Entities;
+            await context.PostAsync($"TEST CONTEXT Este tem negaçao: {!context.UserData.TryGetValue(ContextConstants.TrackId, out trackId)}");
+            await context.PostAsync($"TEST CONTEXT  Estão nao tem negação: {context.UserData.TryGetValue(ContextConstants.TrackId, out trackId)}");
+
+            foreach (EntityRecommendation item in listOfEntities)
+            {
+                if (!context.UserData.TryGetValue(ContextConstants.TrackId, out trackId))
+                {
+                    await context.PostAsync($"Entrei no tryGetValue");
+
+                    trackId = item.Entity;
+                    context.UserData.SetValue(ContextConstants.TrackId, item.Entity);
+                    await context.PostAsync($"Estou a espera que o set tenha sido feito");
+                    await context.PostAsync($"O novo valor do track id é {context.UserData.GetValue<string>(ContextConstants.TrackId)}");
+                }
+            }
         }
 
         public async Task OnOptionSelected(IDialogContext context, IAwaitable<object> result)
