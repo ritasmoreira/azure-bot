@@ -45,7 +45,7 @@ namespace LuisBot.Dialogs
 
             await context.PostAsync($"Valor:{!context.UserData.TryGetValue(ContextConstants.Date, out orderDate)}");
 
-            if (context.UserData.TryGetValue(ContextConstants.Date, out orderDate))
+            if (!context.UserData.TryGetValue(ContextConstants.Date, out orderDate))
             {
                 await context.PostAsync($"Estou a definir a data pela primeira vez");
                 PromptDialog.Number(context, this.ResumeAfterDouble, "What number?", "Tenta outra vez");
@@ -66,6 +66,8 @@ namespace LuisBot.Dialogs
                    
                     );
             }
+
+            // FALTA AQUI UM WAIT ou assim 
         }
 
 
@@ -73,7 +75,6 @@ namespace LuisBot.Dialogs
         {
             var nr = await result;
             await context.PostAsync($"Number is {nr}");
-            context.Done(true);
         }
 
 
