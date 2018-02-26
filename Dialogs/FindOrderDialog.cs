@@ -20,7 +20,7 @@ namespace LuisBot.Dialogs
         {
         }
 
-        public string trackId;
+
         
 
         // Animation Card
@@ -64,16 +64,17 @@ namespace LuisBot.Dialogs
                 if (item.Type.Equals("TrackingID"))
                 {
 
-                   
-                    await context.PostAsync($"Este tem negaçao: {!context.UserData.TryGetValue(ContextConstants.TrackId, out trackId)}");
-                    await context.PostAsync($"Estão nao tem negação: {context.UserData.TryGetValue(ContextConstants.TrackId, out trackId)}\n trackId é {trackId}");
+                    string trackNr;
+
+                    await context.PostAsync($"Este tem negaçao: {!context.UserData.TryGetValue(ContextConstants.TrackId, out trackNr)}");
+                    await context.PostAsync($"Estão nao tem negação: {context.UserData.TryGetValue(ContextConstants.TrackId, out trackNr)}\n trackId é {trackNr}");
 
                    
-                    if (!context.UserData.TryGetValue(ContextConstants.TrackId, out trackId))
+                    if (!context.UserData.TryGetValue(ContextConstants.TrackId, out trackNr))
                     {
                         await context.PostAsync($"Entrei no tryGetValue");
 
-                        trackId = item.Entity;
+                        trackNr = item.Entity;
                         context.UserData.SetValue(ContextConstants.TrackId, item.Entity);
                         await context.PostAsync($"Estou a espera que o set tenha sido feito");
                         await context.PostAsync($"O novo valor do track id é {context.UserData.GetValue<string>(ContextConstants.TrackId)}");
