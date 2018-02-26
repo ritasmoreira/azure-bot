@@ -85,7 +85,7 @@ namespace LuisBot.Dialogs
                         context.Wait(MessageReceived);
 
                         await context.PostAsync($"Antes do prompt ");
-                        PromptDialog.Text(context, this.OnTextWritten, "Qual a localização da sua encomenda?", "Não percebi a localização, pode repetir?");
+                        PromptDialog.Text(context, this.OnTextWritten, "Qual a localização da sua encomenda?");
                         return;
                     }
                     
