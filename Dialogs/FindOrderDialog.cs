@@ -64,10 +64,10 @@ namespace LuisBot.Dialogs
                 if (item.Type.Equals("TrackingID"))
                 {
 
-                    string trackNr;
+                    string trackNr = "";
 
                     await context.PostAsync($"Este tem negaçao: {!context.UserData.TryGetValue(ContextConstants.TrackId, out trackNr)}");
-                    await context.PostAsync($"Estão nao tem negação: {context.UserData.TryGetValue(ContextConstants.TrackId, out trackNr)}\n trackId é {trackNr}");
+                    await context.PostAsync($"Estão nao tem negação: {context.UserData.TryGetValue(ContextConstants.TrackId, out trackNr)}\n trackNUMBER é {trackNr}");
 
                    
                     if (!context.UserData.TryGetValue(ContextConstants.TrackId, out trackNr))
