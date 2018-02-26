@@ -77,11 +77,10 @@ namespace LuisBot.Dialogs
                         // await context.PostAsync($"O novo valor do track id é {context.UserData.GetValue<string>(ContextConstants.TrackId)}");
                     }
 
-                    if (!context.UserData.TryGetValue(ContextConstants.Location, out location))
-                    {
+
                         await context.PostAsync($"Estou a definir um novo valor para a localização");
                         PromptDialog.Text(context, this.OnTextWritten, "Qual a localização da sua encomenda?", "Não percebi a localização, pode repetir?", 3);
-                    }
+                    
 
 
                     await context.PostAsync($"A sua encomenda tem o track ID seguinte: {context.UserData.GetValue<string>(ContextConstants.Location)}");
