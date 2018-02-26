@@ -20,6 +20,7 @@ namespace LuisBot.Dialogs
         {
         }
 
+        public string trackId;
         
 
         // Animation Card
@@ -54,7 +55,7 @@ namespace LuisBot.Dialogs
             bool isTrackId = false;
             IList<EntityRecommendation> listOfEntitiesFound = result.Entities;
 
-            string trackId;
+            
 
             // Percorre lista de entidades na mensagem recebida e procura por um track Id
             // Caso o encontre, vai guardá-lo 
