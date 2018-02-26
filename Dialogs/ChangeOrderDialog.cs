@@ -60,13 +60,11 @@ namespace LuisBot.Dialogs
                 PromptDialog.Confirm(
                     context,
                     this.ResumeAfterChoicePrompt,
-                    "Tem a certeza que deseja alterar a data da sua encomenda?",
-                    "Data inválida. Por favor tente outra vez",
-                    3,
-                    PromptStyle.Auto
+                    "Tem a certeza que deseja alterar a data da sua encomenda?"
+                   
                     );
             }
-            context.Done(true);
+            //context.Done(true);
         }
 
 
@@ -81,14 +79,9 @@ namespace LuisBot.Dialogs
         private async Task ResumeAfterChoicePrompt(IDialogContext context, IAwaitable<bool> result)
         {
             var choice = await result;
-            if(choice)
-            {
-                await context.PostAsync($"Data de encomenda alterada com sucesso");
-            } else
-            {
-                await context.PostAsync($"Operação cancelada");
-            }
-            context.Done(true);
+
+            await context.PostAsync(choice ? "Data de encomenda alterada com sucesso" : "Operação Cancelada");
+
         }
 
         private async Task ResumeAfterPrompt(IDialogContext context, IAwaitable<string> result)
