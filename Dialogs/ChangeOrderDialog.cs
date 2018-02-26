@@ -47,11 +47,9 @@ namespace LuisBot.Dialogs
 
             if (!context.UserData.TryGetValue(ContextConstants.Date, out orderDate))
             {
-                if (message.Entities[0].Type.Equals("Date"))
-                {
-                    await context.PostAsync($"Estou a definir a data pela primeira vez");
-                    PromptDialog.Text(context, this.ResumeAfterPrompt, "Qual a data da sua encomenda?", "Data inválida. Por favor tente outra vez", 3);
-                }
+                   await context.PostAsync($"Estou a definir a data pela primeira vez");
+                   PromptDialog.Text(context, this.ResumeAfterPrompt, "Qual a data da sua encomenda?", "Data inválida. Por favor tente outra vez", 3);
+                
             }
             else {
                 // TODO: Pedir e alterar a data
