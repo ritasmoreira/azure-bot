@@ -85,7 +85,7 @@ namespace LuisBot.Dialogs
                         context.Wait(MessageReceived);
 
                         await context.PostAsync($"Antes do prompt ");
-                        PromptDialog.Text(context, this.OnTextWritten, "Qual a localização da sua encomenda?");
+                        PromptDialog.Text(context, OnTextWritten, "Qual a localização da sua encomenda?");
                         return;
                     }
                     
@@ -158,7 +158,7 @@ namespace LuisBot.Dialogs
         }
         
 
-        public async Task OnTextWritten(IDialogContext context, IAwaitable<object> result)
+        public async Task OnTextWritten(IDialogContext context, IAwaitable<string> result)
         {
             var location = await result;
             await context.PostAsync($"Estou dentro do ontextwritten");
