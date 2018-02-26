@@ -20,6 +20,7 @@ namespace LuisBot.Dialogs
         {
         }
 
+        
 
         // Animation Card
         private static Attachment GetAnimationCard()
@@ -49,16 +50,26 @@ namespace LuisBot.Dialogs
         [LuisIntent("FindOrder")]
         private async Task FindOrderIntent(IDialogContext context, LuisResult result)
         {
-            await context.PostAsync($"FindOrderIntent dentro do FindOrderDialog");
+            //await context.PostAsync($"FindOrderIntent dentro do FindOrderDialog");
             bool isTrackId = false;
             IList<EntityRecommendation> listOfEntitiesFound = result.Entities;
 
+            
+
+            // Percorre lista de entidades na mensagem recebida e procura por um track Id
+            // Caso o encontre, vai guardá-lo 
             foreach (EntityRecommendation item in listOfEntitiesFound)
             {
                 if (item.Type.Equals("TrackingID"))
                 {
+                    string trackId = item.Entity;
+                    if (!context.UserData.TryGetValue(ContextConstants.TrackId, out trackId))
+                    {
+                        context.UserData.SetValue(ContextConstants.TrackId, trackId);
+                    }
+                    await context.PostAsync($"Obrigada pelo número de identificação. A sua encomenda encontra-se em {context.UserData.GetValue<string>(ContextConstants.Location)} \n You have reached {result.Intents[0].Intent}");
 
-                    await context.PostAsync($"Obrigada pelo número de identificação. Vou averiguar onde está a sua encomenda \n You have reached {result.Intents[0].Intent}");
+                    await context.PostAsync($"A sua encomenda tem o track ID seguinte: {context.UserData.GetValue<string>(ContextConstants.Location)}");
                     isTrackId = true;
 
                     // VVV important
@@ -76,7 +87,7 @@ namespace LuisBot.Dialogs
                 message.Attachments.Add(attachment);
                 await context.PostAsync(message); 
 
-                await context.PostAsync($"Por favor insira o número de identificação da sua encomenda. \n You have reached {result.Intents[0].Intent}.");
+                await context.PostAsync($"Por favor insira primeiro o número de identificação da sua encomenda. \n You have reached {result.Intents[0].Intent}.");
                 context.Wait(MessageReceived);
             }
 
@@ -86,7 +97,7 @@ namespace LuisBot.Dialogs
         [LuisIntent("Cancel")]
         private async Task CancelIntent(IDialogContext context, LuisResult result)
         {
-            await context.PostAsync($"CancelIntent dentro do FindOrderDialog");
+            //await context.PostAsync($"CancelIntent dentro do FindOrderDialog");
             //await context.PostAsync($"Tem a certeza que pretende cancelar a sua encomenda?");
             /*
               var message = context.MakeMessage();
