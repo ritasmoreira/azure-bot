@@ -7,8 +7,8 @@ namespace LuisBot
 {
     public class ContextConstants
     {
-        public const string Location = "Londres";
+        public const string Location = "Location";
         public const string TrackId = "TrackIdNr";
-        public const string Date = "21 de Novembro de 2018";
+        public const string Date = "Date";
     }
 }
