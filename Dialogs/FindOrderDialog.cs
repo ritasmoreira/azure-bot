@@ -153,7 +153,10 @@ namespace LuisBot.Dialogs
         public async Task OnTextWritten(IDialogContext context, IAwaitable<object> result)
         {
             var message = await result;
+            await context.PostAsync($"Estou dentro do ontextwritten");
+
             context.UserData.SetValue(ContextConstants.Location, message.ToString());
+            return;
         }
 
         public async Task OnOptionSelected(IDialogContext context, IAwaitable<object> result)
