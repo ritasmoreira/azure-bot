@@ -21,6 +21,7 @@ namespace LuisBot.Dialogs
         {
         }
 
+        /*
         private async Task MessageReceivedAsync(IDialogContext context, IAwaitable<object> result)
         {
             var activity = await result as IMessageActivity;
@@ -28,10 +29,10 @@ namespace LuisBot.Dialogs
             // TODO: Put logic for handling user message here
 
             context.Wait(MessageReceivedAsync);
-        }
+        } */
 
 
-        [LuisIntent("CancelOrder")]
+        [LuisIntent("Cancel")]
         private async Task CancelOrderIntent(IDialogContext context, LuisResult result)
         {
             await context.PostAsync($"Dentro do cancel dialog");
