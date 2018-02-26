@@ -62,7 +62,7 @@ namespace LuisBot.Dialogs
             {
                 if (item.Type.Equals("TrackingID"))
                 {
-                    await context.PostAsync($"Found TrckingID");
+                    await context.PostAsync($"Found TrckingID and the if returns {context.UserData.TryGetValue(ContextConstants.TrackId, out trackId)}");
 
                     if (!context.UserData.TryGetValue(ContextConstants.TrackId, out trackId))
                     {
