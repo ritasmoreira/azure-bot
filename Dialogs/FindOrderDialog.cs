@@ -93,8 +93,6 @@ namespace LuisBot.Dialogs
 
                     await context.PostAsync($"A sua encomenda tem o track ID seguinte: {context.UserData.GetValue<string>(ContextConstants.TrackId)}");
                     //await context.PostAsync($"Obrigada pelo número de identificação. A sua encomenda encontra-se em {context.UserData.GetValue<string>(ContextConstants.Location)} \n You have reached {result.Intents[0].Intent}");
-
-
                     //await context.PostAsync($"Obrigada pelo número de identificação.");
 
                     isTrackId = true;
@@ -108,11 +106,12 @@ namespace LuisBot.Dialogs
             if (!isTrackId)
             {
                 // Attaching gif to message
+                /*
                 var message = context.MakeMessage();
                 var attachment = GetAnimationCard();
            
                 message.Attachments.Add(attachment);
-                await context.PostAsync(message); 
+                await context.PostAsync(message);  */
 
                 await context.PostAsync($"Por favor insira primeiro o número de identificação da sua encomenda. \n You have reached {result.Intents[0].Intent}.");
                 context.Wait(MessageReceived);
@@ -120,6 +119,26 @@ namespace LuisBot.Dialogs
 
           
         }
+
+      
+        
+
+        public async Task OnTextWritten(IDialogContext context, IAwaitable<string> result)
+        {
+            var location = await result;
+            await context.PostAsync($"Estou dentro do ontextwritten");
+
+            context.UserData.SetValue(ContextConstants.Location, location.ToString());
+            context.Done(true);
+        }
+
+
+
+
+
+
+
+        /*
 
         [LuisIntent("Cancel")]
         private async Task CancelIntent(IDialogContext context, LuisResult result)
@@ -152,19 +171,9 @@ namespace LuisBot.Dialogs
 
             //context.Done(true);
               
-            */
-            PromptDialog.Choice(context, this.OnOptionSelected, new List<string>() { "Sim","Não"}, "Tem a certeza que quer cancelar a sua encomenda?", "A resposta que deu não é válida. Quer cancelar a encomenda?");
+            
+            PromptDialog.Choice(context, this.OnOptionSelected, new List<string>() { "Sim", "Não" }, "Tem a certeza que quer cancelar a sua encomenda?", "A resposta que deu não é válida. Quer cancelar a encomenda?");
 
-        }
-        
-
-        public async Task OnTextWritten(IDialogContext context, IAwaitable<string> result)
-        {
-            var location = await result;
-            await context.PostAsync($"Estou dentro do ontextwritten");
-
-            context.UserData.SetValue(ContextConstants.Location, location.ToString());
-            context.Done(true);
         }
 
         public async Task OnOptionSelected(IDialogContext context, IAwaitable<object> result)
@@ -180,5 +189,7 @@ namespace LuisBot.Dialogs
 
             context.Done(true);
         }
+
+            */
     }
 }
