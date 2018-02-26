@@ -45,11 +45,11 @@ namespace LuisBot.Dialogs
 
             await context.PostAsync($"Valor:{!context.UserData.TryGetValue(ContextConstants.Date, out orderDate)}");
 
-            if (!context.UserData.TryGetValue(ContextConstants.Date, out orderDate))
+            if (context.UserData.TryGetValue(ContextConstants.Date, out orderDate))
             {
-                   await context.PostAsync($"Estou a definir a data pela primeira vez");
+                await context.PostAsync($"Estou a definir a data pela primeira vez");
                 PromptDialog.Number(context, this.ResumeAfterDouble, "What number?", "Tenta outra vez");
-                  // PromptDialog.Text(context, this.ResumeAfterPrompt, "Qual a data da sua encomenda?", "Data inválida. Por favor tente outra vez", 3);
+                // PromptDialog.Text(context, this.ResumeAfterPrompt, "Qual a data da sua encomenda?", "Data inválida. Por favor tente outra vez", 3);
                 
             }
             else {
