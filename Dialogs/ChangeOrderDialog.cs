@@ -66,7 +66,7 @@ namespace LuisBot.Dialogs
                    
                     );
             }
-            //context.Done(true);
+            context.Done(true);
         }
 
 
