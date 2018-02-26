@@ -60,7 +60,9 @@ namespace LuisBot.Dialogs
                 PromptDialog.Confirm(
                     context,
                     this.ResumeAfterChoicePrompt,
-                    "Tem a certeza que deseja alterar a data da sua encomenda?"
+                    "Tem a certeza que deseja alterar a data da sua encomenda?",
+                    "Tenta outra vez",
+                    3
                    
                     );
             }
