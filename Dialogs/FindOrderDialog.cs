@@ -20,7 +20,7 @@ namespace LuisBot.Dialogs
         {
         }
 
-        public string trackNr;
+        public string trackNr, location;
         
 
         // Animation Card
@@ -70,14 +70,19 @@ namespace LuisBot.Dialogs
                    
                     if (!context.UserData.TryGetValue(ContextConstants.TrackId, out trackNr))
                     {
-                        await context.PostAsync($"Entrei no tryGetValue");
+                        // await context.PostAsync($"Entrei no tryGetValue");
 
                         trackNr = item.Entity;
                         context.UserData.SetValue(ContextConstants.TrackId, item.Entity);
-                        await context.PostAsync($"O novo valor do track id é {context.UserData.GetValue<string>(ContextConstants.TrackId)}");
+                        // await context.PostAsync($"O novo valor do track id é {context.UserData.GetValue<string>(ContextConstants.TrackId)}");
                     }
 
-                    context.UserData.SetValue(ContextConstants.Location, "Londres");
+                    if (!context.UserData.TryGetValue(ContextConstants.Location, out location))
+                    {
+                        await context.PostAsync($"Estou a definir um novo valor para a localização");
+                        PromptDialog.Text(context, this.OnTextWritten, "Qual a localização da sua encomenda?", "Não percebi a localização, pode repetir?", 3);
+                    }
+
 
                     await context.PostAsync($"A sua encomenda tem o track ID seguinte: {context.UserData.GetValue<string>(ContextConstants.Location)}");
                     await context.PostAsync($"Obrigada pelo número de identificação. A sua encomenda encontra-se em {context.UserData.GetValue<string>(ContextConstants.Location)} \n You have reached {result.Intents[0].Intent}");
@@ -146,13 +151,17 @@ namespace LuisBot.Dialogs
         }
         
 
+        public async Task OnTextWritten(IDialogContext context, IAwaitable<object> result)
+        {
+            var message = await result;
+            context.UserData.SetValue(ContextConstants.Location, message.ToString());
+        }
+
         public async Task OnOptionSelected(IDialogContext context, IAwaitable<object> result)
         {
             var message = await result;
 
-            await context.PostAsync($"OptionsSelected");
-
-            if(message.Equals("Sim"))
+            if (message.Equals("Sim"))
             {
                 await context.PostAsync($"A sua encomenda será cancelada. Obrigado");
             } else if (message.Equals("Não") || message.Equals("nao")) {
