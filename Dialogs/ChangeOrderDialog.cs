@@ -42,8 +42,10 @@ namespace LuisBot.Dialogs
             var message = await activity;
 
             // TODO : Se ainda não tiver colocado o valor do trackID
-           
-            if(!context.UserData.TryGetValue(ContextConstants.Date, out orderDate))
+
+            await context.PostAsync($"Valor:{!context.UserData.TryGetValue(ContextConstants.Date, out orderDate)}");
+
+            if (!context.UserData.TryGetValue(ContextConstants.Date, out orderDate))
             {
                 if (message.Entities[0].Type.Equals("Date"))
                 {
@@ -85,13 +87,13 @@ namespace LuisBot.Dialogs
         private async Task ResumeAfterPrompt(IDialogContext context, IAwaitable<string> result)
         {
 
-            var date = await result;
+            var orderDate = await result;
 
             // TODO - verificar aqui se a data é a certa, se nao for, conta como resposta errada e ele depois das 3 vai com o boda
-            if (date.GetType().Equals("Date"))
+            if (orderDate.GetType().Equals("Date"))
             {
                 await context.PostAsync($"Sou do tipo date!");
-                context.UserData.SetValue(ContextConstants.Date, date);
+                context.UserData.SetValue(ContextConstants.Date, orderDate);
                 context.Done(true);
             }
             else context.Wait(MessageReceived);
