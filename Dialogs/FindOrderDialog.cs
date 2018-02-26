@@ -63,42 +63,41 @@ namespace LuisBot.Dialogs
             {
                 if (item.Type.Equals("TrackingID"))
                 {
-
-                    //await context.PostAsync($"Este tem negaçao: {!context.UserData.TryGetValue(ContextConstants.TrackId, out trackNr)}");
-                    //await context.PostAsync($"Estão nao tem negação: {context.UserData.TryGetValue(ContextConstants.TrackId, out trackNr)}\n trackNUMBER é {trackNr}");
-
-                   
-                    if (!context.UserData.TryGetValue(ContextConstants.TrackId, out trackNr))
-                    {
-                        // await context.PostAsync($"Entrei no tryGetValue");
-
-                        trackNr = item.Entity;
-                        context.UserData.SetValue(ContextConstants.TrackId, item.Entity);
-                        // await context.PostAsync($"O novo valor do track id é {context.UserData.GetValue<string>(ContextConstants.TrackId)}");
-                    }
-
-                    if (!context.UserData.TryGetValue(ContextConstants.Location, out location))
-                    {
-                    } else
-                    {
-                        await context.PostAsync($"Insira o novo valor ");
-                        context.Wait(MessageReceived);
-
-                        await context.PostAsync($"Antes do prompt ");
-                        PromptDialog.Text(context, OnTextWritten, "Qual a localização da sua encomenda?");
-                        return;
-                    }
-                    
-                    
-
-                    await context.PostAsync($"A sua encomenda tem o track ID seguinte: {context.UserData.GetValue<string>(ContextConstants.TrackId)}");
-                    //await context.PostAsync($"Obrigada pelo número de identificação.");
-
+                    await context.PostAsync($"Obrigada pelo número de identificação.");
                     isTrackId = true;
 
                     // VVV important
                     context.Done(true);
                     break;
+
+                    //await context.PostAsync($"Este tem negaçao: {!context.UserData.TryGetValue(ContextConstants.TrackId, out trackNr)}");
+                    //await context.PostAsync($"Estão nao tem negação: {context.UserData.TryGetValue(ContextConstants.TrackId, out trackNr)}\n trackNUMBER é {trackNr}");
+
+                    /*
+                     if (!context.UserData.TryGetValue(ContextConstants.TrackId, out trackNr))
+                     {
+                         // await context.PostAsync($"Entrei no tryGetValue");
+
+                         trackNr = item.Entity;
+                         context.UserData.SetValue(ContextConstants.TrackId, item.Entity);
+                         // await context.PostAsync($"O novo valor do track id é {context.UserData.GetValue<string>(ContextConstants.TrackId)}");
+                     }
+
+                     if (!context.UserData.TryGetValue(ContextConstants.Location, out location))
+                     {
+                     } else
+                     {
+                         await context.PostAsync($"Insira o novo valor ");
+                         context.Wait(MessageReceived);
+
+                         await context.PostAsync($"Antes do prompt ");
+                         PromptDialog.Text(context, OnTextWritten, "Qual a localização da sua encomenda?");
+                         return;
+                     }
+
+
+                     await context.PostAsync($"A sua encomenda tem o track ID seguinte: {context.UserData.GetValue<string>(ContextConstants.TrackId)}");                     */
+
                 }
             }
 
