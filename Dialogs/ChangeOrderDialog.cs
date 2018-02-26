@@ -65,8 +65,8 @@ namespace LuisBot.Dialogs
                     3
                    
                     );
+                context.Wait(MessageReceived);
             }
-            context.Wait(MessageReceived);
         }
 
 
