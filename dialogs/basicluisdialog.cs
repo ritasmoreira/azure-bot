@@ -78,14 +78,14 @@ namespace Microsoft.Bot.Sample.LuisBot
         }
 
 
-        private async Task ResumeAfterFindOrderDialog(IDialogContext context, IAwaitable<object> result)
+       // ###########################################
+
+        [LuisIntent("ChangeOrder")]
+        public async Task ChangeOrderIntent(IDialogContext context, IAwaitable<IMessageActivity> activity, LuisResult result)
         {
-            // var resultFindOrder = await result;
+            var message = await activity;
+            await context.Forward(new ChangeOrderDialog(), this.ResumeAfterChangeOrderDialog, message, CancellationToken.None);
 
-            // await context.PostAsync($"New order dialog just told me this: {resultFindOrder}");
-
-            // Again, wait for the next message from the user.
-            //context.Wait(this.MessageReceivedAsync);
         }
 
         [LuisIntent("Cancel")]
@@ -95,15 +95,8 @@ namespace Microsoft.Bot.Sample.LuisBot
             //await this.ShowLuisResult(context, result);
             var message = await activity;
             await context.PostAsync($"Cancel Intent");
-            await context.Forward(new FindOrderDialog(), this.ResumeAfterCancelDialog, message, CancellationToken.None);
+            await context.Forward(new CancelOrderDialog(), this.ResumeAfterCancelDialog, message, CancellationToken.None);
 
-        }
-
-        private async Task ResumeAfterCancelDialog(IDialogContext context, IAwaitable<object> result)
-        {
-            var message = await result;
-            await context.PostAsync($"Resume After Cancel Dialog");
-            context.Wait(MessageReceived);
         }
 
         [LuisIntent("Help")]
@@ -114,10 +107,33 @@ namespace Microsoft.Bot.Sample.LuisBot
             await this.ShowLuisResult(context, result);
         }
 
-       
-        
-        
-        
+
+        // ####################################
+
+        private async Task ResumeAfterFindOrderDialog(IDialogContext context, IAwaitable<object> result)
+        {
+            var message = await result;
+            context.Wait(MessageReceived);
+        }
+
+
+
+        private async Task ResumeAfterCancelDialog(IDialogContext context, IAwaitable<object> result)
+        {
+            var message = await result;
+            await context.PostAsync($"Resume After Cancel Dialog");
+            context.Wait(MessageReceived);
+        }
+
+
+        private async Task ResumeAfterChangeOrderDialog(IDialogContext context, IAwaitable<object> result)
+        {
+            var message = await result;
+            context.Wait(MessageReceived);
+
+        }
+
+
         private async Task ShowLuisResult(IDialogContext context, LuisResult result) 
         {
             await context.PostAsync($"Show Result");

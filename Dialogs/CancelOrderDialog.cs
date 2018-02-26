@@ -21,13 +21,6 @@ namespace LuisBot.Dialogs
         {
         }
 
-        public Task StartAsync(IDialogContext context)
-        {
-            context.Wait(MessageReceivedAsync);
-
-            return Task.CompletedTask;
-        }
-
         private async Task MessageReceivedAsync(IDialogContext context, IAwaitable<object> result)
         {
             var activity = await result as IMessageActivity;
@@ -41,6 +34,7 @@ namespace LuisBot.Dialogs
         [LuisIntent("CancelOrder")]
         private async Task CancelOrderIntent(IDialogContext context, LuisResult result)
         {
+            await context.PostAsync($"Dentro do cancel dialog");
             PromptDialog.Choice(context, this.OnOptionSelected, new List<string>() { "Sim", "Não" }, "Tem a certeza que quer cancelar a sua encomenda?", "A resposta que deu não é válida. Quer cancelar a encomenda?");
 
         }

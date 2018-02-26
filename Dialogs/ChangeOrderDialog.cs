@@ -22,13 +22,7 @@ namespace LuisBot.Dialogs
         }
 
 
-
-        public Task StartAsync(IDialogContext context)
-        {
-            context.Wait(MessageReceivedAsync);
-
-            return Task.CompletedTask;
-        }
+       
 
         private async Task MessageReceivedAsync(IDialogContext context, IAwaitable<object> result)
         {
@@ -43,6 +37,7 @@ namespace LuisBot.Dialogs
         private async Task CancelOrderIntent(IDialogContext context, LuisResult result)
         {
             await context.PostAsync($"You have reached {result.Intents[0].Intent}.");
+            context.Done(true);
         }
 
     }
