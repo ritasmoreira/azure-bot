@@ -86,6 +86,8 @@ namespace LuisBot.Dialogs
         {
 
             var orderDate = await result;
+            await context.PostAsync($"Estou dentro do ResumeAfter Prompt e este é ov getType do orderDate {orderDate.GetType()}");
+
 
             // TODO - verificar aqui se a data é a certa, se nao for, conta como resposta errada e ele depois das 3 vai com o boda
             if (orderDate.GetType().Equals("Date"))
