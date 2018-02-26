@@ -20,7 +20,7 @@ namespace LuisBot.Dialogs
         {
         }
 
-
+        public string trackNr;
         
 
         // Animation Card
@@ -64,10 +64,8 @@ namespace LuisBot.Dialogs
                 if (item.Type.Equals("TrackingID"))
                 {
 
-                    string trackNr = "";
-
-                    await context.PostAsync($"Este tem negaçao: {!context.UserData.TryGetValue(ContextConstants.TrackId, out trackNr)}");
-                    await context.PostAsync($"Estão nao tem negação: {context.UserData.TryGetValue(ContextConstants.TrackId, out trackNr)}\n trackNUMBER é {trackNr}");
+                    //await context.PostAsync($"Este tem negaçao: {!context.UserData.TryGetValue(ContextConstants.TrackId, out trackNr)}");
+                    //await context.PostAsync($"Estão nao tem negação: {context.UserData.TryGetValue(ContextConstants.TrackId, out trackNr)}\n trackNUMBER é {trackNr}");
 
                    
                     if (!context.UserData.TryGetValue(ContextConstants.TrackId, out trackNr))
@@ -76,9 +74,10 @@ namespace LuisBot.Dialogs
 
                         trackNr = item.Entity;
                         context.UserData.SetValue(ContextConstants.TrackId, item.Entity);
-                        await context.PostAsync($"Estou a espera que o set tenha sido feito");
                         await context.PostAsync($"O novo valor do track id é {context.UserData.GetValue<string>(ContextConstants.TrackId)}");
-                    } 
+                    }
+
+                    context.UserData.SetValue(ContextConstants.Location, "Londres");
 
                     await context.PostAsync($"A sua encomenda tem o track ID seguinte: {context.UserData.GetValue<string>(ContextConstants.Location)}");
                     await context.PostAsync($"Obrigada pelo número de identificação. A sua encomenda encontra-se em {context.UserData.GetValue<string>(ContextConstants.Location)} \n You have reached {result.Intents[0].Intent}");
