@@ -80,7 +80,7 @@ namespace LuisBot.Dialogs
 
                         await context.PostAsync($"Estou a definir um novo valor para a localização");
                         PromptDialog.Text(context, this.OnTextWritten, "Qual a localização da sua encomenda?", "Não percebi a localização, pode repetir?", 3);
-                    
+                    context.Wait(MessageReceived);
 
 
                     await context.PostAsync($"A sua encomenda tem o track ID seguinte: {context.UserData.GetValue<string>(ContextConstants.Location)}");
