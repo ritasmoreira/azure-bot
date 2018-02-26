@@ -100,7 +100,6 @@ namespace LuisBot.Dialogs
                 context.UserData.SetValue(ContextConstants.Date, orderDate);
                 context.Done(true);
             }
-            else context.Wait(MessageReceived);
           
             // TODO - Como retorno que valor é errado? 
         }
