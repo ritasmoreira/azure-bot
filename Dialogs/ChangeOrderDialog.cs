@@ -30,7 +30,7 @@ namespace LuisBot.Dialogs
         [LuisIntent("ChangeOrder")]
         private async Task ChangeOrderIntent(IDialogContext context, IAwaitable<IMessageActivity> activity, LuisResult result)
         {
-
+            await context.PostAsync($"{context.UserData.TryGetValue(ContextConstants.Date, out orderDate_string)}");
             await context.PostAsync($"You have reached {result.Intents[0].Intent}.");
 
             if (!result.TryFindEntity(EntityDate, out orderDate))
@@ -45,8 +45,8 @@ namespace LuisBot.Dialogs
 
 
                     await context.PostAsync($"Entrei na parte da PRIMEIRA data");
-                   // context.UserData.SetValue(ContextConstants.Date, orderDate.Entity);
-                   // await context.PostAsync($"A nova data da sua encomenda foi alterada para {context.UserData.GetValue<string>(ContextConstants.Date)}");
+                    context.UserData.SetValue(ContextConstants.Date, orderDate.Entity);
+                    await context.PostAsync($"A nova data da sua encomenda foi alterada para {context.UserData.GetValue<string>(ContextConstants.Date)}");
                     
                     
                 }
@@ -54,7 +54,7 @@ namespace LuisBot.Dialogs
                 {
                     await context.PostAsync($"Entrei na parte da SEGUNDA data");
 
-                   // await context.PostAsync($"A sua data anterior era {context.UserData.GetValue<string>(ContextConstants.Date)}");
+                    await context.PostAsync($"A sua data anterior era {context.UserData.GetValue<string>(ContextConstants.Date)}");
 
                     // TODO: Passar o orderDate para o MessageReceivedAsync
 
