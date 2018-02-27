@@ -88,7 +88,7 @@ namespace LuisBot.Dialogs
                 await context.PostAsync($"Pls stop");
             }
 
-            context.Wait(this.MessageReceivedAsync);
+           //context.Wait(this.MessageReceivedAsync);
             
         }
 
