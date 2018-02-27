@@ -48,7 +48,7 @@ namespace LuisBot.Dialogs
             if (!context.UserData.TryGetValue(ContextConstants.Date, out orderDate))
             {
                 await context.PostAsync($"Estou a definir a data pela primeira vez");
-                PromptDialog.Text(context, this.ResumeAfterDouble, "What number?", "Tenta outra vez", 3);
+                PromptDialog.Text(context, this.ResumeAfterDouble, "What number?", "Valor invalido, tenta outra vez", 3);
                 // PromptDialog.Text(context, this.ResumeAfterPrompt, "Qual a data da sua encomenda?", "Data inválida. Por favor tente outra vez", 3);
                 
             }
@@ -78,8 +78,8 @@ namespace LuisBot.Dialogs
             if (orderDate.GetType().Equals("Date"))
             {
                 await context.PostAsync($"Number is {nr}");
-            }
-            else context.Wait(MessageReceived);
+                context.Done(true);
+            } 
             
         }
 
