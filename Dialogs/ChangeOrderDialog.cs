@@ -49,7 +49,7 @@ namespace LuisBot.Dialogs
                 }
                 else
                 {
-                    await context.PostAsync($"A data antes de ser mudada {context.UserData.GetValue<string>(ContextConstants.Date)}");
+                   // await context.PostAsync($"A data antes de ser mudada {context.UserData.GetValue<string>(ContextConstants.Date)}");
 
                     // recebe a data e faz setValue
 
