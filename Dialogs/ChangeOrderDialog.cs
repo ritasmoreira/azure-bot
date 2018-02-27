@@ -23,15 +23,6 @@ namespace LuisBot.Dialogs
 
         public string orderDate;
 
-        private async Task MessageReceivedAsync(IDialogContext context, IAwaitable<object> result)
-        {
-            var activity = await result as IMessageActivity;
-
-            // TODO: Put logic for handling user message here
-
-            context.Wait(MessageReceivedAsync);
-        }
-
 
 
 
@@ -39,60 +30,55 @@ namespace LuisBot.Dialogs
         private async Task ChangeOrderIntent(IDialogContext context, IAwaitable<IMessageActivity> activity, LuisResult result)
         {
             await context.PostAsync($"You have reached {result.Intents[0].Intent}.");
-            var message = await activity;
-            
-            // TODO : Se ainda não tiver colocado o valor do trackID
 
+            bool isDate = false;
+            IList<EntityRecommendation> listOfEntitiesFound = result.Entities;
 
-            if (!context.UserData.TryGetValue(ContextConstants.Date, out orderDate))
+            foreach (EntityRecommendation item in listOfEntitiesFound)
             {
-                await context.PostAsync($"Estou a definir a data pela primeira vez");
-
-                
-                PromptDialog.Text(context, this.ResumeAfterDouble, "What number?", "Valor invalido, tenta outra vez", 3);
-                // PromptDialog.Text(context, this.ResumeAfterPrompt, "Qual a data da sua encomenda?", "Data inválida. Por favor tente outra vez", 3);
-                await context.PostAsync($"Depois do text");
-                
-            }
-            else {
-                // TODO: Pedir e alterar a data
-
-                await context.PostAsync($"A data esta a ser modificada");
-                // TODO: Alterar para conter o valor da data na mesangem 
-                PromptDialog.Confirm(
-                    context,
-                    this.ResumeAfterChoicePrompt,
-                    "Tem a certeza que deseja alterar a data da sua encomenda?",
-                    "Tenta outra vez",
-                    3
-                   
-                    );
-            }
-
-            // FALTA AQUI UM WAIT ou assim 
-        }
-
-
-        private async Task ResumeAfterDouble(IDialogContext context, IAwaitable<string> result)
-        {
-            var nr = await result;
-
-
-
-            await context.PostAsync($"olaolaolaola");
-            await context.PostAsync($"{nr.GetType()}");
-            
-
-            await context.PostAsync($"Este e o tipo: {nr.GetType()}");
-
-                
-                if (nr.GetType().Equals("Date"))
+                if (item.Type.Equals("Date"))
                 {
-                    await context.PostAsync($"Number is {nr}");
-                }
+                    isDate = true;
 
-            context.Wait(MessageReceived);
+                    if (context.UserData.TryGetValue(ContextConstants.Date, out orderDate))
+                    {
+                        // Guardar data
+                        orderDate = item.Entity;
+                        await context.PostAsync($"É a primeira vez que guarda a data");
+                        context.UserData.SetValue(ContextConstants.Date, orderDate);
+                    }
+                    else
+                    {
+                        var message = context.MakeMessage();
+                        message.Text = "Tem a certeza que quer confirmar alterar a data?";
+                        message.SuggestedActions = new SuggestedActions()
+                        {
+                            Actions = new List<CardAction>()
+                            {
+                                new CardAction(){ Title = "Sim", Type=ActionTypes.ImBack, Value="Sim" },
+                                new CardAction(){ Title = "Não", Type=ActionTypes.ImBack, Value="Não" },
+                            }
+                        };
+
+                        await context.PostAsync(message);
+                        context.Wait(MessageReceivedAsync);
+
+                        await context.PostAsync($"estou a seguir ao message received ");
+                        
+                    }
+                }
+            }
+
+            if(!isDate)
+            {
+                await context.PostAsync($"Por favor insira a nova data de entrega");
+                context.Wait(MessageReceived);
+            }
+
+              
         }
+
+    
 
 
         private async Task ResumeAfterChoicePrompt(IDialogContext context, IAwaitable<bool> result)
@@ -121,5 +107,17 @@ namespace LuisBot.Dialogs
           
             // TODO - Como retorno que valor é errado? 
         }
+
+
+        private async Task MessageReceivedAsync(IDialogContext context, IAwaitable<object> result)
+        {
+            var activity = await result as IMessageActivity;
+            await context.PostAsync($"Estou dentro do messageReeivedAsync");
+            await context.PostAsync($"{activity.Value}");
+            // TODO: Put logic for handling user message here
+
+            context.Wait(MessageReceivedAsync);
+        }
+
     }
 }
