@@ -74,7 +74,11 @@ namespace LuisBot.Dialogs
         private async Task ResumeAfterDouble(IDialogContext context, IAwaitable<string> result)
         {
             var nr = await result;
-            await context.PostAsync($"Number is {nr}");
+            if (orderDate.GetType().Equals("Date"))
+            {
+                await context.PostAsync($"Number is {nr}");
+            }
+            else context.Wait(MessageReceived);
             
         }
 
