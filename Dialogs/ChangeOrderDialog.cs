@@ -51,7 +51,7 @@ namespace LuisBot.Dialogs
                 {
                    // await context.PostAsync($"A data antes de ser mudada {context.UserData.GetValue<string>(ContextConstants.Date)}");
 
-                    // recebe a data e faz setValue
+                    // TODO: Passar o orderDate para o MessageReceivedAsync
 
 
                     var message = context.MakeMessage();
@@ -65,7 +65,6 @@ namespace LuisBot.Dialogs
                         }
                     };
 
-
                     await context.PostAsync(message);
                     context.Wait(MessageReceivedAsync);
                 }
@@ -74,16 +73,10 @@ namespace LuisBot.Dialogs
               
         }
 
-    
-
-       
 
         private async Task MessageReceivedAsync(IDialogContext context, IAwaitable<object> buttonResult)
         {
             var activity = await buttonResult as IMessageActivity;
-            await context.PostAsync($"Estou dentro do messageReeivedAsync");
-
-            await context.PostAsync($"Text is {activity.Text}");
 
             if(activity.Text.Equals("Sim"))
             {
