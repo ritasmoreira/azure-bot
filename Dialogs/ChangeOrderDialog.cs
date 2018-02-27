@@ -75,11 +75,20 @@ namespace LuisBot.Dialogs
         {
             var nr = await result;
             await context.PostAsync($"Este e o tipo: {orderDate.GetType()}");
-            if (orderDate.GetType().Equals("Date"))
+
+            try
             {
-                await context.PostAsync($"Number is {nr}");
-                context.Done(true);
-            } 
+                await context.PostAsync($"olaolaolaola");
+                if (orderDate.GetType().Equals("Date"))
+                {
+                    await context.PostAsync($"Number is {nr}");
+                }
+            } catch(TooManyAttemptsException)
+            {
+                await context.PostAsync($"Pls stop");
+            }
+
+            context.Wait(this.MessageReceivedAsync);
             
         }
 
@@ -106,7 +115,7 @@ namespace LuisBot.Dialogs
                 context.UserData.SetValue(ContextConstants.Date, orderDate);
                 context.Done(true);
             }
-            else context.Wait(MessageReceived);
+            else context.Wait(MessageReceivedAsync);
           
             // TODO - Como retorno que valor é errado? 
         }
