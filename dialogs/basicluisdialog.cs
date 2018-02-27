@@ -121,7 +121,7 @@ namespace Microsoft.Bot.Sample.LuisBot
         private async Task ResumeAfterCancelDialog(IDialogContext context, IAwaitable<object> result)
         {
             var message = await result;
-            await context.PostAsync($"Resume After Cancel Dialog");
+            //await context.PostAsync($"Resume After Cancel Dialog");
             context.Wait(MessageReceived);
         }
 

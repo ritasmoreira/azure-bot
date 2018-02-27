@@ -112,6 +112,7 @@ namespace LuisBot.Dialogs
 
         [LuisIntent("Help")]
         [LuisIntent("None")]
+        [LuisIntent("FindOrder")]
         public async Task CancelIntent(IDialogContext context, LuisResult result)
         {
             int counter;
