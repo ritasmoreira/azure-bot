@@ -12,7 +12,7 @@ namespace LuisBot.Dialogs
     [Serializable]
     public class ChangeOrderDialog : LuisDialog<object>
     {
-
+        private const string EntityDate = "Date";
 
         public ChangeOrderDialog() : base(new LuisService(new LuisModelAttribute(
           ConfigurationManager.AppSettings["LuisAppId"],
@@ -34,17 +34,24 @@ namespace LuisBot.Dialogs
             bool isDate = false;
             IList<EntityRecommendation> listOfEntitiesFound = result.Entities;
 
+            EntityRecommendation dateEntityRecommendaiton;
+
+
             foreach (EntityRecommendation item in listOfEntitiesFound)
             {
-                if (item.Type.Equals("Date"))
-                {
-                    await context.PostAsync($"estou aqui dentro");
-                    isDate = true;
 
+                EntityRecommendation orderDate;
+
+                if (!result.TryFindEntity(EntityDate, out orderDate))
+                {
+                    await context.PostAsync($"Por favor insira a nova data de entrega");
+                    context.Wait(MessageReceived);
+                } else
+                {
+                    // Falta aqui uma negaçãozinha
                     if (context.UserData.TryGetValue(ContextConstants.Date, out orderDate))
                     {
                         // Guardar data
-                        orderDate = item.Entity;
                         await context.PostAsync($"É a primeira vez que guarda a data");
                         context.UserData.SetValue(ContextConstants.Date, orderDate);
 
@@ -65,11 +72,18 @@ namespace LuisBot.Dialogs
 
                         await context.PostAsync(message);
                         context.Wait(MessageReceivedAsync);
-
                         //await context.PostAsync($"estou a seguir ao message received ");
-                        //break;
+                        break;
                     }
                 }
+                /*
+                    if (item.Type.Equals("Date"))
+                {
+                    await context.PostAsync($"estou aqui dentro");
+                    isDate = true;
+
+                  
+                } */
             }
 
             if(!isDate)
@@ -83,44 +97,24 @@ namespace LuisBot.Dialogs
 
     
 
+       
 
-        private async Task ResumeAfterChoicePrompt(IDialogContext context, IAwaitable<bool> result)
+        private async Task MessageReceivedAsync(IDialogContext context, IAwaitable<object> buttonResult)
         {
-            var choice = await result;
-
-            await context.PostAsync(choice ? "Data de encomenda alterada com sucesso" : "Operação Cancelada");
-
-        }
-
-        private async Task ResumeAfterPrompt(IDialogContext context, IAwaitable<string> result)
-        {
-
-            var orderDate = await result;
-            await context.PostAsync($"Estou dentro do ResumeAfter Prompt e este é ov getType do orderDate {orderDate.GetType()}");
-
-
-            // TODO - verificar aqui se a data é a certa, se nao for, conta como resposta errada e ele depois das 3 vai com o boda
-            if (orderDate.GetType().Equals("Date"))
-            {
-                await context.PostAsync($"Sou do tipo date!");
-                context.UserData.SetValue(ContextConstants.Date, orderDate);
-                context.Done(true);
-            }
-            else context.Wait(MessageReceivedAsync);
-          
-            // TODO - Como retorno que valor é errado? 
-        }
-
-
-        private async Task MessageReceivedAsync(IDialogContext context, IAwaitable<object> result)
-        {
-            var activity = await result as IMessageActivity;
+            var activity = await buttonResult as IMessageActivity;
             await context.PostAsync($"Estou dentro do messageReeivedAsync");
 
             await context.PostAsync($"Text is {activity.Text}");
-            await context.PostAsync($"Get Type {activity.SuggestedActions.Actions.GetType()}");
 
-            // TODO: Put logic for handling user message here
+            if(activity.Text.Equals("Sim"))
+            {
+                //por um bool cujo valor e verificado no changeorder
+            } else if (activity.Text.Equals("Não") || activity.Text.Equals("Nao"))
+            {
+                await context.PostAsync($"Operação cancelada");
+                context.Done(true);
+            }
+
 
         }
 
