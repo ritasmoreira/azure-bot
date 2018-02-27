@@ -21,7 +21,8 @@ namespace LuisBot.Dialogs
         {
         }
 
-        public string orderDate;
+
+        public EntityRecommendation orderDate;
 
 
 
@@ -31,7 +32,6 @@ namespace LuisBot.Dialogs
         {
             await context.PostAsync($"You have reached {result.Intents[0].Intent}.");
 
-            EntityRecommendation orderDate;
 
             if (!result.TryFindEntity(EntityDate, out orderDate))
             {
@@ -40,22 +40,23 @@ namespace LuisBot.Dialogs
             } else
             {
                 // Falta aqui uma negaçãozinha
-                if (context.UserData.TryGetValue(ContextConstants.Date, out orderDate))
+                if (!context.UserData.TryGetValue(ContextConstants.Date, out orderDate))
                 {
                     // Guardar data
-                    await context.PostAsync($"É a primeira vez que guarda a data");
+                    await context.PostAsync($"É a primeira vez que guarda esta data");
                     context.UserData.SetValue(ContextConstants.Date, orderDate);
-                    //await
+                    await context.PostAsync($"A nova data da sua encomenda foi alterada para {context.UserData.GetValue<string>(ContextConstants.Date)}");
+                    
                 }
                 else
                 {
-                   // await context.PostAsync($"A data antes de ser mudada {context.UserData.GetValue<string>(ContextConstants.Date)}");
+                    await context.PostAsync($"A sua data anterior era {context.UserData.GetValue<string>(ContextConstants.Date)}");
 
                     // TODO: Passar o orderDate para o MessageReceivedAsync
 
 
                     var message = context.MakeMessage();
-                    message.Text = "Tem a certeza que quer confirmar alterar a data?";
+                    message.Text = "Tem a certeza que quer alterar a data?";
                     message.SuggestedActions = new SuggestedActions()
                     {
                         Actions = new List<CardAction>()
@@ -81,9 +82,9 @@ namespace LuisBot.Dialogs
             if(activity.Text.Equals("Sim"))
             {
                 //por um bool cujo valor e verificado no changeorder
-                await context.PostAsync($"Hero");
-                //await context.PostAsync($"A data antes de ser mudada {context.UserData.GetValue<string>(ContextConstants.Date)}");
-
+                context.UserData.SetValue(ContextConstants.Date, orderDate);
+                await context.PostAsync($"A data foi alterada com sucesso. \n A sua nova data de entrega é: {context.UserData.GetValue<string>(ContextConstants.Date)}");
+                context.Done(true);
             }
             else if (activity.Text.Equals("Não") || activity.Text.Equals("Nao"))
             {
