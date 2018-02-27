@@ -32,13 +32,9 @@ namespace LuisBot.Dialogs
             await context.PostAsync($"You have reached {result.Intents[0].Intent}.");
 
             bool isDate = false;
-            IList<EntityRecommendation> listOfEntitiesFound = result.Entities;
-
-            EntityRecommendation dateEntityRecommendaiton;
+          //  IList<EntityRecommendation> listOfEntitiesFound = result.Entities;
 
 
-            foreach (EntityRecommendation item in listOfEntitiesFound)
-            {
 
                 EntityRecommendation orderDate;
 
@@ -55,7 +51,6 @@ namespace LuisBot.Dialogs
                         await context.PostAsync($"É a primeira vez que guarda a data");
                         context.UserData.SetValue(ContextConstants.Date, orderDate);
 
-                        break;
                     }
                     else
                     {
@@ -84,7 +79,7 @@ namespace LuisBot.Dialogs
 
                   
                 } */
-            }
+            
 
             if(!isDate)
             {
