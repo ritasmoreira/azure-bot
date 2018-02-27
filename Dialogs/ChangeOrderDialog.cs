@@ -23,7 +23,7 @@ namespace LuisBot.Dialogs
 
 
         public EntityRecommendation orderDate;
-
+        public string orderDate_string;
 
 
 
@@ -40,18 +40,18 @@ namespace LuisBot.Dialogs
             } else
             {
                 // Falta aqui uma negaçãozinha
-                if (!context.UserData.TryGetValue(ContextConstants.Date, out orderDate))
+                if (!context.UserData.TryGetValue(ContextConstants.Date, out orderDate_string))
                 {
                     // Guardar data
-                    if (orderDate == null)
+                    if (orderDate_string == null)
                     {
                         await context.PostAsync($"orderdate null");
                     }
                     else
                     {
                         await context.PostAsync($"É a primeira vez que guarda esta data");
-                        string dateString = orderDate.Entity;
-                        await context.PostAsync($"A order data é: {dateString}");
+
+                        await context.PostAsync($"A order data é: {orderDate_string}");
                         //await context.PostAsync($"A order data é: {orderDate.Entity.}");
 
                         //context.UserData.SetValue(ContextConstants.Date, orderDate.Entity);
