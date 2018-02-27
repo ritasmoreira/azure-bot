@@ -28,14 +28,14 @@ namespace LuisBot.Dialogs
 
 
 
-        [LuisIntent("ChangeOrder")]
+       // [LuisIntent("ChangeOrder")]
         private async Task ChangeOrderIntent(IDialogContext context, IAwaitable<IMessageActivity> activity, LuisResult result)
         {
 
 
             await context.PostAsync($"You have reached {result.Intents[0].Intent}.");
             //await context.PostAsync($"logo depois false -> erro? {context.UserData.TryGetValue(ContextConstants.OrderDate, out orderDate_string)}");
-
+            
 
             if (!result.TryFindEntity(EntityDate, out orderDate))
             {
@@ -99,6 +99,12 @@ namespace LuisBot.Dialogs
                 context.Done(true);
             }
 
+
+        }
+
+        private async Task CheckDate(IDialogContext context, IAwaitable<object> result)
+        {
+            var dateMessage = await result;
 
         }
 
