@@ -43,12 +43,20 @@ namespace LuisBot.Dialogs
                 if (!context.UserData.TryGetValue(ContextConstants.Date, out orderDate))
                 {
                     // Guardar data
-                    await context.PostAsync($"É a primeira vez que guarda esta data");
-                    await context.PostAsync($"A order data é: {orderDate.Entity}");
-                    //await context.PostAsync($"A order data é: {orderDate.Entity.}");
+                    if (orderDate == null)
+                    {
+                        await context.PostAsync($"orderdate null");
+                    }
+                    else
+                    {
+                        await context.PostAsync($"É a primeira vez que guarda esta data");
+                        string dateString = orderDate.Entity;
+                        await context.PostAsync($"A order data é: {dateString}");
+                        //await context.PostAsync($"A order data é: {orderDate.Entity.}");
 
-                    //context.UserData.SetValue(ContextConstants.Date, orderDate.Entity);
-                    await context.PostAsync($"A nova data da sua encomenda foi alterada para {context.UserData.GetValue<string>(ContextConstants.Date)}");
+                        //context.UserData.SetValue(ContextConstants.Date, orderDate.Entity);
+                        await context.PostAsync($"A nova data da sua encomenda foi alterada para {context.UserData.GetValue<string>(ContextConstants.Date)}");
+                    }
                     
                 }
                 else
