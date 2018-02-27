@@ -31,12 +31,9 @@ namespace LuisBot.Dialogs
         {
             await context.PostAsync($"You have reached {result.Intents[0].Intent}.");
 
-          //  IList<EntityRecommendation> listOfEntitiesFound = result.Entities;
-
-
             EntityRecommendation orderDate;
 
-            if (!result.TryFindEntity("Date", out orderDate))
+            if (!result.TryFindEntity(EntityDate, out orderDate))
             {
                 await context.PostAsync($"Por favor insira a nova data de entrega");
                 context.Wait(MessageReceived);
@@ -65,7 +62,6 @@ namespace LuisBot.Dialogs
 
                     await context.PostAsync(message);
                     context.Wait(MessageReceivedAsync);
-                    //await context.PostAsync($"estou a seguir ao message received ");
                 }
             }
            

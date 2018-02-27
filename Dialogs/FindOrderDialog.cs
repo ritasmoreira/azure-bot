@@ -13,7 +13,7 @@ namespace LuisBot.Dialogs
     [Serializable]
     public class FindOrderDialog : LuisDialog<object>
     {
-        private const string EntityDate = "TrackingId";
+        private const string EntityTrackId = "TrackingID";
 
         public FindOrderDialog() : base(new LuisService(new LuisModelAttribute(
           ConfigurationManager.AppSettings["LuisAppId"],
@@ -53,12 +53,9 @@ namespace LuisBot.Dialogs
         [LuisIntent("FindOrder")]
         private async Task FindOrderIntent(IDialogContext context, LuisResult result)
         {
-            await context.PostAsync($"FindOrderIntent dentro do FindOrderDialog");
-
-
             EntityRecommendation trackId;
 
-            if (!result.TryFindEntity(EntityDate, out trackId))
+            if (!result.TryFindEntity(EntityTrackId, out trackId))
             {
                 await context.PostAsync($"Por favor insira primeiro o número de identificação da sua encomenda. \n You have reached {result.Intents[0].Intent}.");
                 context.Wait(MessageReceived);
@@ -72,85 +69,13 @@ namespace LuisBot.Dialogs
                 await context.PostAsync(message);  */
             } else {
                 await context.PostAsync($"Obrigada pelo número de identificação.");
-
-                // VVV important
                 context.Done(true);
             }
 
-            /*
-            // Percorre lista de entidades na mensagem recebida e procura por um track Id
-            // Caso o encontre, vai guardá-lo 
-            foreach (EntityRecommendation item in listOfEntitiesFound)
-            {
-                if (item.Type.Equals("TrackingID"))
-                {
-                    await context.PostAsync($"Obrigada pelo número de identificação.");
-                    isTrackId = true;
-
-                    // VVV important
-                    context.Done(true);
-                    break;
-
-                    //await context.PostAsync($"Este tem negaçao: {!context.UserData.TryGetValue(ContextConstants.TrackId, out trackNr)}");
-                    //await context.PostAsync($"Estão nao tem negação: {context.UserData.TryGetValue(ContextConstants.TrackId, out trackNr)}\n trackNUMBER é {trackNr}");
-
-                    /*
-                     if (!context.UserData.TryGetValue(ContextConstants.TrackId, out trackNr))
-                     {
-                         // await context.PostAsync($"Entrei no tryGetValue");
-
-                         trackNr = item.Entity;
-                         context.UserData.SetValue(ContextConstants.TrackId, item.Entity);
-                         // await context.PostAsync($"O novo valor do track id é {context.UserData.GetValue<string>(ContextConstants.TrackId)}");
-                     }
-
-                     if (!context.UserData.TryGetValue(ContextConstants.Location, out location))
-                     {
-                     } else
-                     {
-                         await context.PostAsync($"Insira o novo valor ");
-                         context.Wait(MessageReceived);
-
-                         await context.PostAsync($"Antes do prompt ");
-                         PromptDialog.Text(context, OnTextWritten, "Qual a localização da sua encomenda?");
-                         return;
-                     }
-
-
-                     await context.PostAsync($"A sua encomenda tem o track ID seguinte: {context.UserData.GetValue<string>(ContextConstants.TrackId)}");                     
-
-                }
-            }
-
-            if (!isTrackId)
-            {
-                // Attaching gif to message
-                /*
-                var message = context.MakeMessage();
-                var attachment = GetAnimationCard();
-           
-                message.Attachments.Add(attachment);
-                await context.PostAsync(message);  
-
-                await context.PostAsync($"Por favor insira primeiro o número de identificação da sua encomenda. \n You have reached {result.Intents[0].Intent}.");
-                context.Wait(MessageReceived);
-            }
-            */
           
         }
 
       
-        
-
-        public async Task OnTextWritten(IDialogContext context, IAwaitable<string> result)
-        {
-            var location = await result;
-            await context.PostAsync($"Estou dentro do ontextwritten");
-
-            context.UserData.SetValue(ContextConstants.Location, location.ToString());
-            context.Done(true);
-        }
-
         
     }
 }
