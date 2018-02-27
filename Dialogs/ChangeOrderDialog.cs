@@ -42,9 +42,9 @@ namespace LuisBot.Dialogs
                 if (!context.UserData.TryGetValue(ContextConstants.Date, out orderDate_string))
                 {
                     // Guardar data
-                    
-                
 
+
+                    await context.PostAsync($"Entrei na parte da PRIMEIRA data");
                     context.UserData.SetValue(ContextConstants.Date, orderDate.Entity);
                     await context.PostAsync($"A nova data da sua encomenda foi alterada para {context.UserData.GetValue<string>(ContextConstants.Date)}");
                     
@@ -52,6 +52,8 @@ namespace LuisBot.Dialogs
                 }
                 else
                 {
+                    await context.PostAsync($"Entrei na parte da SEGUNDA data");
+
                     await context.PostAsync($"A sua data anterior era {context.UserData.GetValue<string>(ContextConstants.Date)}");
 
                     // TODO: Passar o orderDate para o MessageReceivedAsync
