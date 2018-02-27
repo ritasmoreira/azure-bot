@@ -45,10 +45,15 @@ namespace LuisBot.Dialogs
                     // Guardar data
                     await context.PostAsync($"É a primeira vez que guarda a data");
                     context.UserData.SetValue(ContextConstants.Date, orderDate);
-
+                    //await
                 }
                 else
                 {
+                    await context.PostAsync($"A data antes de ser mudada {context.UserData.GetValue<string>(ContextConstants.Date)}");
+
+                    // recebe a data e faz setValue
+
+
                     var message = context.MakeMessage();
                     message.Text = "Tem a certeza que quer confirmar alterar a data?";
                     message.SuggestedActions = new SuggestedActions()
@@ -59,6 +64,7 @@ namespace LuisBot.Dialogs
                             new CardAction(){ Title = "Não", Type=ActionTypes.ImBack, Value="Não" },
                         }
                     };
+
 
                     await context.PostAsync(message);
                     context.Wait(MessageReceivedAsync);
@@ -82,7 +88,11 @@ namespace LuisBot.Dialogs
             if(activity.Text.Equals("Sim"))
             {
                 //por um bool cujo valor e verificado no changeorder
-            } else if (activity.Text.Equals("Não") || activity.Text.Equals("Nao"))
+                await context.PostAsync($"Hero");
+                //await context.PostAsync($"A data antes de ser mudada {context.UserData.GetValue<string>(ContextConstants.Date)}");
+
+            }
+            else if (activity.Text.Equals("Não") || activity.Text.Equals("Nao"))
             {
                 await context.PostAsync($"Operação cancelada");
                 context.Done(true);
