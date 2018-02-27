@@ -68,7 +68,6 @@ namespace LuisBot.Dialogs
                         await context.PostAsync(message);
                         context.Wait(MessageReceivedAsync);
                         //await context.PostAsync($"estou a seguir ao message received ");
-                        break;
                     }
                 }
                 /*
