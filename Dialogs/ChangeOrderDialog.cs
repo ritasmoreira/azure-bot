@@ -30,8 +30,9 @@ namespace LuisBot.Dialogs
         [LuisIntent("ChangeOrder")]
         private async Task ChangeOrderIntent(IDialogContext context, IAwaitable<IMessageActivity> activity, LuisResult result)
         {
-            await context.PostAsync($"You have reached {result.Intents[0].Intent}.");
+            await context.PostAsync($"{context.UserData.GetValue<string>(ContextConstants.Date)}");
 
+            await context.PostAsync($"You have reached {result.Intents[0].Intent}.");
 
             if (!result.TryFindEntity(EntityDate, out orderDate))
             {
