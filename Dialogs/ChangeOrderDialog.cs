@@ -13,6 +13,7 @@ namespace LuisBot.Dialogs
     public class ChangeOrderDialog : LuisDialog<object>
     {
         private const string EntityDate = "Date";
+        private const string EntityTrackId = "TrackingID";
 
         public ChangeOrderDialog() : base(new LuisService(new LuisModelAttribute(
           ConfigurationManager.AppSettings["LuisAppId"],
@@ -22,7 +23,7 @@ namespace LuisBot.Dialogs
         }
 
 
-        public EntityRecommendation orderDate;
+        public EntityRecommendation orderDate, orderTrackId;
         public string orderDate_string;
 
 
@@ -31,9 +32,9 @@ namespace LuisBot.Dialogs
         private async Task ChangeOrderIntent(IDialogContext context, IAwaitable<IMessageActivity> activity, LuisResult result)
         {
 
-           
+
             await context.PostAsync($"You have reached {result.Intents[0].Intent}.");
-            await context.PostAsync($"logo depois false -> erro? {context.UserData.TryGetValue(ContextConstants.OrderDate, out orderDate_string)}");
+            //await context.PostAsync($"logo depois false -> erro? {context.UserData.TryGetValue(ContextConstants.OrderDate, out orderDate_string)}");
 
 
             if (!result.TryFindEntity(EntityDate, out orderDate))
@@ -47,7 +48,7 @@ namespace LuisBot.Dialogs
                     // Guardar data
 
 
-                    await context.PostAsync($"Entrei na parte da PRIMEIRA data");
+                    //await context.PostAsync($"Entrei na parte da PRIMEIRA data");
                     context.UserData.SetValue(ContextConstants.OrderDate, orderDate.Entity);
                     await context.PostAsync($"A nova data da sua encomenda foi alterada para {context.UserData.GetValue<string>(ContextConstants.OrderDate)}");
                     await context.PostAsync($"miguel {context.UserData.TryGetValue(ContextConstants.OrderDate, out orderDate_string)}");
@@ -72,7 +73,6 @@ namespace LuisBot.Dialogs
                             new CardAction(){ Title = "Não", Type=ActionTypes.ImBack, Value="Não" },
                         }
                     };
-
                     await context.PostAsync(message);
                     context.Wait(MessageReceivedAsync);
                 }
@@ -84,8 +84,9 @@ namespace LuisBot.Dialogs
         private async Task MessageReceivedAsync(IDialogContext context, IAwaitable<object> buttonResult)
         {
             var activity = await buttonResult as IMessageActivity;
+            
 
-            if(activity.Text.Equals("Sim"))
+            if (activity.Text.Equals("Sim"))
             {
                 //por um bool cujo valor e verificado no changeorder
                 context.UserData.SetValue(ContextConstants.OrderDate, orderDate.Entity);
