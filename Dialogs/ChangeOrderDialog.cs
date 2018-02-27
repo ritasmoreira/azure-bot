@@ -31,61 +31,44 @@ namespace LuisBot.Dialogs
         {
             await context.PostAsync($"You have reached {result.Intents[0].Intent}.");
 
-            bool isDate = false;
           //  IList<EntityRecommendation> listOfEntitiesFound = result.Entities;
 
 
+            EntityRecommendation orderDate;
 
-                EntityRecommendation orderDate;
-
-                if (!result.TryFindEntity(EntityDate, out orderDate))
-                {
-                    await context.PostAsync($"Por favor insira a nova data de entrega");
-                    context.Wait(MessageReceived);
-                } else
-                {
-                    // Falta aqui uma negaçãozinha
-                    if (context.UserData.TryGetValue(ContextConstants.Date, out orderDate))
-                    {
-                        // Guardar data
-                        await context.PostAsync($"É a primeira vez que guarda a data");
-                        context.UserData.SetValue(ContextConstants.Date, orderDate);
-
-                    }
-                    else
-                    {
-                        var message = context.MakeMessage();
-                        message.Text = "Tem a certeza que quer confirmar alterar a data?";
-                        message.SuggestedActions = new SuggestedActions()
-                        {
-                            Actions = new List<CardAction>()
-                            {
-                                new CardAction(){ Title = "Sim", Type=ActionTypes.ImBack, Value="Sim" },
-                                new CardAction(){ Title = "Não", Type=ActionTypes.ImBack, Value="Não" },
-                            }
-                        };
-
-                        await context.PostAsync(message);
-                        context.Wait(MessageReceivedAsync);
-                        //await context.PostAsync($"estou a seguir ao message received ");
-                    }
-                }
-                /*
-                    if (item.Type.Equals("Date"))
-                {
-                    await context.PostAsync($"estou aqui dentro");
-                    isDate = true;
-
-                  
-                } */
-            
-
-            if(!isDate)
+            if (!result.TryFindEntity("Date", out orderDate))
             {
                 await context.PostAsync($"Por favor insira a nova data de entrega");
                 context.Wait(MessageReceived);
-            }
+            } else
+            {
+                // Falta aqui uma negaçãozinha
+                if (context.UserData.TryGetValue(ContextConstants.Date, out orderDate))
+                {
+                    // Guardar data
+                    await context.PostAsync($"É a primeira vez que guarda a data");
+                    context.UserData.SetValue(ContextConstants.Date, orderDate);
 
+                }
+                else
+                {
+                    var message = context.MakeMessage();
+                    message.Text = "Tem a certeza que quer confirmar alterar a data?";
+                    message.SuggestedActions = new SuggestedActions()
+                    {
+                        Actions = new List<CardAction>()
+                        {
+                            new CardAction(){ Title = "Sim", Type=ActionTypes.ImBack, Value="Sim" },
+                            new CardAction(){ Title = "Não", Type=ActionTypes.ImBack, Value="Não" },
+                        }
+                    };
+
+                    await context.PostAsync(message);
+                    context.Wait(MessageReceivedAsync);
+                    //await context.PostAsync($"estou a seguir ao message received ");
+                }
+            }
+           
               
         }
 
