@@ -32,9 +32,6 @@ namespace LuisBot.Dialogs
         {
 
             context.UserData.Clear();
-            await context.PostAsync($"oi");
-
-           await context.PostAsync($"{context.UserData.TryGetValue(ContextConstants.Date, out orderDate_string)}");
             await context.PostAsync($"You have reached {result.Intents[0].Intent}.");
 
 
@@ -45,22 +42,22 @@ namespace LuisBot.Dialogs
                 context.Wait(MessageReceived);
             } else
             {
-                if (!context.UserData.TryGetValue(ContextConstants.Date, out orderDate_string))
+                if (!context.UserData.TryGetValue(ContextConstants.OrderDate, out orderDate_string))
                 {
                     // Guardar data
 
 
                     await context.PostAsync($"Entrei na parte da PRIMEIRA data");
-                    context.UserData.SetValue(ContextConstants.Date, orderDate.Entity);
-                    await context.PostAsync($"A nova data da sua encomenda foi alterada para {context.UserData.GetValue<string>(ContextConstants.Date)}");
-                    
-                    
+                    context.UserData.SetValue(ContextConstants.OrderDate, orderDate.Entity);
+                    await context.PostAsync($"A nova data da sua encomenda foi alterada para {context.UserData.GetValue<string>(ContextConstants.OrderDate)}");
+                    await context.PostAsync($"miguel {context.UserData.TryGetValue(ContextConstants.OrderDate, out orderDate_string)}");
+
                 }
                 else
                 {
                     await context.PostAsync($"Entrei na parte da SEGUNDA data");
 
-                    await context.PostAsync($"A sua data anterior era {context.UserData.GetValue<string>(ContextConstants.Date)}");
+                    await context.PostAsync($"A sua data anterior era {context.UserData.GetValue<string>(ContextConstants.OrderDate)}");
 
                     // TODO: Passar o orderDate para o MessageReceivedAsync
 
@@ -80,8 +77,7 @@ namespace LuisBot.Dialogs
                     context.Wait(MessageReceivedAsync);
                 }
             }
-           
-              
+   
         }
 
 
@@ -92,8 +88,8 @@ namespace LuisBot.Dialogs
             if(activity.Text.Equals("Sim"))
             {
                 //por um bool cujo valor e verificado no changeorder
-                context.UserData.SetValue(ContextConstants.Date, orderDate_string);
-                await context.PostAsync($"A data foi alterada com sucesso. \n A sua nova data de entrega é: {context.UserData.GetValue<string>(ContextConstants.Date)}");
+                context.UserData.SetValue(ContextConstants.OrderDate, orderDate_string);
+                await context.PostAsync($"A data foi alterada com sucesso. \n A sua nova data de entrega é: {context.UserData.GetValue<string>(ContextConstants.OrderDate)}");
                 context.Done(true);
             }
             else if (activity.Text.Equals("Não") || activity.Text.Equals("Nao"))

@@ -7,8 +7,8 @@ namespace LuisBot
 {
     public class ContextConstants
     {
-        public const string Location = "Location";
+        public const string OrderLocation = "Location";
         public const string TrackId = "TrackIdNr";
-        public const string Date = "Date";
+        public const string OrderDate = "Date";
     }
 }
