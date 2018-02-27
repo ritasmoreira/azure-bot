@@ -116,7 +116,11 @@ namespace LuisBot.Dialogs
         {
             var activity = await result as IMessageActivity;
             await context.PostAsync($"Estou dentro do messageReeivedAsync");
-            await context.PostAsync($"{activity}");
+
+
+            await context.PostAsync($"To String {activity.SuggestedActions.Actions.ToString()}");
+            await context.PostAsync($"Get Type {activity.SuggestedActions.Actions.GetType()}");
+
             // TODO: Put logic for handling user message here
 
         }
