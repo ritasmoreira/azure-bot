@@ -40,16 +40,16 @@ namespace LuisBot.Dialogs
         {
             await context.PostAsync($"You have reached {result.Intents[0].Intent}.");
             var message = await activity;
-
+            
             // TODO : Se ainda não tiver colocado o valor do trackID
 
-            await context.PostAsync($"Valor:{!context.UserData.TryGetValue(ContextConstants.Date, out orderDate)}");
 
             if (!context.UserData.TryGetValue(ContextConstants.Date, out orderDate))
             {
                 await context.PostAsync($"Estou a definir a data pela primeira vez");
                 PromptDialog.Text(context, this.ResumeAfterDouble, "What number?", "Valor invalido, tenta outra vez", 3);
                 // PromptDialog.Text(context, this.ResumeAfterPrompt, "Qual a data da sua encomenda?", "Data inválida. Por favor tente outra vez", 3);
+                await context.PostAsync($"Depois do text");
                 
             }
             else {
@@ -74,8 +74,12 @@ namespace LuisBot.Dialogs
         private async Task ResumeAfterDouble(IDialogContext context, IAwaitable<string> result)
         {
             var nr = await result;
+
+
+
             await context.PostAsync($"olaolaolaola");
             await context.PostAsync($"{nr.GetType()}");
+            
 
             await context.PostAsync($"Este e o tipo: {nr.GetType()}");
 
