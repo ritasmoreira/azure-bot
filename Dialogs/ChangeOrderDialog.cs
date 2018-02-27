@@ -39,24 +39,16 @@ namespace LuisBot.Dialogs
                 context.Wait(MessageReceived);
             } else
             {
-                // Falta aqui uma negaçãozinha
                 if (!context.UserData.TryGetValue(ContextConstants.Date, out orderDate_string))
                 {
                     // Guardar data
-                    if (orderDate_string == null)
-                    {
-                        await context.PostAsync($"orderdate null");
-                    }
-                    else
-                    {
-                        await context.PostAsync($"É a primeira vez que guarda esta data");
-
-                        await context.PostAsync($"A order data é: {orderDate_string}");
-                        //await context.PostAsync($"A order data é: {orderDate.Entity.}");
+                    
+                
+                        await context.PostAsync($"A order data é: {orderDate.Entity}");
 
                         //context.UserData.SetValue(ContextConstants.Date, orderDate.Entity);
                         await context.PostAsync($"A nova data da sua encomenda foi alterada para {context.UserData.GetValue<string>(ContextConstants.Date)}");
-                    }
+                    
                     
                 }
                 else
