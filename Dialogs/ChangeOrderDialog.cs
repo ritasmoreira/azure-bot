@@ -38,6 +38,7 @@ namespace LuisBot.Dialogs
             {
                 if (item.Type.Equals("Date"))
                 {
+                    await context.PostAsync($"estou aqui dentro");
                     isDate = true;
 
                     if (context.UserData.TryGetValue(ContextConstants.Date, out orderDate))
@@ -46,6 +47,8 @@ namespace LuisBot.Dialogs
                         orderDate = item.Entity;
                         await context.PostAsync($"É a primeira vez que guarda a data");
                         context.UserData.SetValue(ContextConstants.Date, orderDate);
+
+                        break;
                     }
                     else
                     {
@@ -64,7 +67,7 @@ namespace LuisBot.Dialogs
                         context.Wait(MessageReceivedAsync);
 
                         await context.PostAsync($"estou a seguir ao message received ");
-                        
+                        break;
                     }
                 }
             }
@@ -116,7 +119,6 @@ namespace LuisBot.Dialogs
             await context.PostAsync($"{activity.Value}");
             // TODO: Put logic for handling user message here
 
-            context.Wait(MessageReceivedAsync);
         }
 
     }
