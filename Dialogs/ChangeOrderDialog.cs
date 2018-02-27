@@ -84,7 +84,7 @@ namespace LuisBot.Dialogs
             if(activity.Text.Equals("Sim"))
             {
                 //por um bool cujo valor e verificado no changeorder
-                context.UserData.SetValue(ContextConstants.Date, orderDate);
+                context.UserData.SetValue(ContextConstants.Date, orderDate_string);
                 await context.PostAsync($"A data foi alterada com sucesso. \n A sua nova data de entrega é: {context.UserData.GetValue<string>(ContextConstants.Date)}");
                 context.Done(true);
             }
