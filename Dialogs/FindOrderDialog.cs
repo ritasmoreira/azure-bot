@@ -13,6 +13,8 @@ namespace LuisBot.Dialogs
     [Serializable]
     public class FindOrderDialog : LuisDialog<object>
     {
+        private const string EntityDate = "TrackingId";
+
         public FindOrderDialog() : base(new LuisService(new LuisModelAttribute(
           ConfigurationManager.AppSettings["LuisAppId"],
           ConfigurationManager.AppSettings["LuisAPIKey"],
@@ -52,11 +54,30 @@ namespace LuisBot.Dialogs
         private async Task FindOrderIntent(IDialogContext context, LuisResult result)
         {
             await context.PostAsync($"FindOrderIntent dentro do FindOrderDialog");
-            bool isTrackId = false;
-            IList<EntityRecommendation> listOfEntitiesFound = result.Entities;
 
-            
 
+            EntityRecommendation trackId;
+
+            if (!result.TryFindEntity(EntityDate, out trackId))
+            {
+                await context.PostAsync($"Por favor insira primeiro o número de identificação da sua encomenda. \n You have reached {result.Intents[0].Intent}.");
+                context.Wait(MessageReceived);
+
+                 
+                /*Attaching gif to message
+                var message = context.MakeMessage();
+                var attachment = GetAnimationCard();
+           
+                message.Attachments.Add(attachment);
+                await context.PostAsync(message);  */
+            } else {
+                await context.PostAsync($"Obrigada pelo número de identificação.");
+
+                // VVV important
+                context.Done(true);
+            }
+
+            /*
             // Percorre lista de entidades na mensagem recebida e procura por um track Id
             // Caso o encontre, vai guardá-lo 
             foreach (EntityRecommendation item in listOfEntitiesFound)
@@ -96,7 +117,7 @@ namespace LuisBot.Dialogs
                      }
 
 
-                     await context.PostAsync($"A sua encomenda tem o track ID seguinte: {context.UserData.GetValue<string>(ContextConstants.TrackId)}");                     */
+                     await context.PostAsync($"A sua encomenda tem o track ID seguinte: {context.UserData.GetValue<string>(ContextConstants.TrackId)}");                     
 
                 }
             }
@@ -109,12 +130,12 @@ namespace LuisBot.Dialogs
                 var attachment = GetAnimationCard();
            
                 message.Attachments.Add(attachment);
-                await context.PostAsync(message);  */
+                await context.PostAsync(message);  
 
                 await context.PostAsync($"Por favor insira primeiro o número de identificação da sua encomenda. \n You have reached {result.Intents[0].Intent}.");
                 context.Wait(MessageReceived);
             }
-
+            */
           
         }
 
