@@ -75,12 +75,12 @@ namespace LuisBot.Dialogs
         {
             var nr = await result;
             await context.PostAsync($"olaolaolaola");
+            await context.PostAsync($"{nr.GetType()}");
 
-
-            await context.PostAsync($"Este e o tipo: {orderDate.GetType()}");
+            await context.PostAsync($"Este e o tipo: {nr.GetType()}");
 
                 
-                if (orderDate.GetType().Equals("Date"))
+                if (nr.GetType().Equals("Date"))
                 {
                     await context.PostAsync($"Number is {nr}");
                 }
