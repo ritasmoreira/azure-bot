@@ -44,8 +44,10 @@ namespace LuisBot.Dialogs
                 {
                     // Guardar data
                     await context.PostAsync($"É a primeira vez que guarda esta data");
-                    await context.PostAsync($"A order data é: {orderDate.Entity.ToString()}");
-                    //context.UserData.SetValue(ContextConstants.Date, orderDate.Entity.ToString());
+                    await context.PostAsync($"A order data é: {orderDate.Entity}");
+                    //await context.PostAsync($"A order data é: {orderDate.Entity.}");
+
+                    //context.UserData.SetValue(ContextConstants.Date, orderDate.Entity);
                     await context.PostAsync($"A nova data da sua encomenda foi alterada para {context.UserData.GetValue<string>(ContextConstants.Date)}");
                     
                 }
