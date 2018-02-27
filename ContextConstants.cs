@@ -10,6 +10,6 @@ namespace LuisBot
         public const string Location = "Location";
         public const string TrackId = "TrackIdNr";
         public const string OrderDate = "Date";
-        public const int NumberTrials = 0;
+        public const string NumberTrials = "0";
     }
 }
