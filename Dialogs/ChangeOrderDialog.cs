@@ -35,7 +35,7 @@ namespace LuisBot.Dialogs
         private async Task ChangeOrderIntent(IDialogContext context, IAwaitable<IMessageActivity> activity, LuisResult result)
         {
 
-
+            context.UserData.Clear();
             await context.PostAsync($"You have reached {result.Intents[0].Intent}.");
             //await context.PostAsync($"logo depois false -> erro? {context.UserData.TryGetValue(ContextConstants.OrderDate, out orderDate_string)}");
 
@@ -113,21 +113,7 @@ namespace LuisBot.Dialogs
 
         }
 
-        [LuisIntent("FindOrder")]
-        private async Task FindOrderIntent(IDialogContext context, IAwaitable<IMessageActivity> activity, LuisResult result)
-        {
-            await context.PostAsync("Estou no findOrder do dialogo change");
-
-            var message = await activity;
-            await context.Forward(new FindOrderDialog(), this.ResumeAfterFindOrderDialog, message, CancellationToken.None);
-        }
-
-        private async Task ResumeAfterFindOrderDialog(IDialogContext context, IAwaitable<object> result)
-        {
-            var message = await result;
-            await context.PostAsync("Estou no resume da order");
-            context.Wait(MessageReceived);
-        }
+    
 
         [LuisIntent("Help")]
         [LuisIntent("None")]
@@ -158,6 +144,22 @@ namespace LuisBot.Dialogs
                     context.Done(true);
                 }
             }
+        }
+
+        [LuisIntent("FindOrder")]
+        private async Task FindOrderIntent(IDialogContext context, IAwaitable<IMessageActivity> activity, LuisResult result)
+        {
+            await context.PostAsync("Estou no findOrder do dialogo change");
+
+            var message = await activity;
+            await context.Forward(new FindOrderDialog(), this.ResumeAfterFindOrderDialog, message, CancellationToken.None);
+        }
+
+        private async Task ResumeAfterFindOrderDialog(IDialogContext context, IAwaitable<object> result)
+        {
+            var message = await result;
+            await context.PostAsync("Encomenda encontrada. Por favor introduza a nova data de entrega");
+            context.Wait(MessageReceived);
         }
 
         [LuisIntent("Cancel")]
