@@ -55,7 +55,7 @@ namespace LuisBot.Dialogs
         private async Task FindOrderIntent(IDialogContext context, LuisResult result)
         {
             EntityRecommendation trackId;
-
+            context.UserData.Clear();
             // Verifica se há um track ID guardado no User
             // Depois vê se o user escreveu algum track ID na mensagem
             if (!context.UserData.TryGetValue(ContextConstants.TrackId, out TrackNr_string)) {

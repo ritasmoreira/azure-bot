@@ -51,7 +51,7 @@ namespace LuisBot.Dialogs
                 }
                 else
                 {
-                    await context.PostAsync($"Por favor insira a nova data de entrega para a sua encomenda (**ID**: {context.UserData.GetValue<string>(ContextConstants.TrackId)})");
+                    await context.PostAsync($"Por favor insira a nova data de entrega para a sua encomenda (**ID: {context.UserData.GetValue<string>(ContextConstants.TrackId)})**");
                     context.Wait(MessageReceived);
                 }
             }
