@@ -136,7 +136,7 @@ namespace Microsoft.Bot.Sample.LuisBot
 
         private async Task ShowLuisResult(IDialogContext context, LuisResult result) 
         {
-            await context.PostAsync($"Show Result");
+            //await context.PostAsync($"Show Result");
             context.Wait(MessageReceived);
         } 
 

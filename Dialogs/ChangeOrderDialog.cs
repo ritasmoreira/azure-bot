@@ -59,9 +59,9 @@ namespace LuisBot.Dialogs
                 {
                     await context.PostAsync($"A sua data anterior era {context.UserData.GetValue<string>(ContextConstants.OrderDate)}");
 
-
+                    await context.PostAsync($" {OrderDate_string}");
                     var message = context.MakeMessage();
-                    message.Text = $"Tem a certeza que quer alterar a data para {context.UserData.GetValue<string>(orderDate.Entity)}?";
+                    message.Text = $"Tem a certeza que quer alterar a data para?";
                     message.SuggestedActions = new SuggestedActions()
                     {
                         Actions = new List<CardAction>()
