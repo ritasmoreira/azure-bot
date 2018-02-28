@@ -116,19 +116,19 @@ namespace LuisBot.Dialogs
         public async Task CancelIntent(IDialogContext context, LuisResult result)
         {
             int counter;
-            if (!context.UserData.ContainsKey("NumberTrials"))
+            if (!context.PrivateConversationData.ContainsKey("NumberTrials"))
             {
-                context.UserData.SetValue("NumberTrials", 0);
+                context.PrivateConversationData.SetValue("NumberTrials", 0);
                 counter = 0;
                 await context.PostAsync($" 0000 Data incorreta, por favor tente outra vez");
                 context.Wait(MessageReceived);
             }
             else
             {
-                if (context.UserData.GetValue<int>("NumberTrials") < 2)
+                if (context.PrivateConversationData.GetValue<int>("NumberTrials") < 2)
                 {
-                    counter = context.UserData.GetValue<int>("NumberTrials");
-                    context.UserData.SetValue("NumberTrails", counter++);
+                    counter = context.PrivateConversationData.GetValue<int>("NumberTrials");
+                    context.PrivateConversationData.SetValue("NumberTrails", counter++);
                     await context.PostAsync($"Data incorreta, por favor tente outra vez");
                     context.Wait(MessageReceived);
                 }
