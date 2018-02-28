@@ -81,17 +81,16 @@ namespace LuisBot.Dialogs
 
         }
 
-        /*
+        
         [LuisIntent("ChangeOrder")]
         private async Task ChangeOrderIntent(IDialogContext context, IAwaitable<IMessageActivity> activity, LuisResult result) {
             var message = await activity;
             await context.Forward(new ChangeOrderDialog(), this.ResumeAfterChangeOrderDialog, message, CancellationToken.None);
-        } */
+        } 
     
 
         [LuisIntent("Help")]
         [LuisIntent("None")]
-        [LuisIntent("ChangeOrder")]
         public async Task RemaningIntents(IDialogContext context, IAwaitable<IMessageActivity> activity, LuisResult result)
         {
             context.Done(true);
