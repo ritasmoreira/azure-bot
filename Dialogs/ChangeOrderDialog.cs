@@ -34,7 +34,7 @@ namespace LuisBot.Dialogs
         [LuisIntent("ChangeOrder")]
         private async Task ChangeOrderIntent(IDialogContext context, IAwaitable<IMessageActivity> activity, LuisResult result)
         {
-            await context.PostAsync($"You have reached {result.Intents[0].Intent}.");
+            //await context.PostAsync($"You have reached {result.Intents[0].Intent}.");
 
             // Verifica se existe alguma entidade do tipo Date na mensagem
             if (!result.TryFindEntity(EntityDate, out orderDate))
@@ -66,8 +66,6 @@ namespace LuisBot.Dialogs
                 {
                     await context.PostAsync($"A data da encomenda {context.UserData.GetValue<string>(ContextConstants.TrackId)} é {context.UserData.GetValue<string>(ContextConstants.OrderDate)}");
 
-                    await context.PostAsync($" Order date {OrderDate_string}");
-                    await context.PostAsync($" Entity {orderDate.Entity}");
                     var message = context.MakeMessage();
                     message.Text = $"Tem a certeza que deseja alterar a data para {orderDate.Entity}?";
                     message.SuggestedActions = new SuggestedActions()
@@ -94,7 +92,7 @@ namespace LuisBot.Dialogs
             if (activity.Text.Equals("Sim"))
             {
                 context.UserData.SetValue(ContextConstants.OrderDate, orderDate.Entity);
-                await context.PostAsync($"A data foi alterada com sucesso. \n A sua nova data de entrega é: {context.UserData.GetValue<string>(ContextConstants.OrderDate)}");
+                await context.PostAsync($"A data foi alterada com sucesso. \n A sua nova data de entrega é: **{context.UserData.GetValue<string>(ContextConstants.OrderDate)}**");
                 context.Done(true);
             }
             else if (activity.Text.Equals("Não") || activity.Text.Equals("Nao"))
@@ -138,7 +136,7 @@ namespace LuisBot.Dialogs
                 }
                 else
                 {
-                    await context.PostAsync($"Número de tentativas máximo atingido. \n Por favor contacte companhia para alterar a data da encomenda");
+                    await context.PostAsync($"Número de **tentativas máximo** atingido. \n Por favor contacte a companhia de entrega para alterar a data da encomenda");
                     context.PrivateConversationData.SetValue("NumberTrials", 0);
                     context.Done(true);
                 }
@@ -148,8 +146,6 @@ namespace LuisBot.Dialogs
         [LuisIntent("FindOrder")]
         private async Task FindOrderIntent(IDialogContext context, IAwaitable<IMessageActivity> activity, LuisResult result)
         {
-            await context.PostAsync("Estou no findOrder do dialogo change");
-
             var message = await activity;
             await context.Forward(new FindOrderDialog(), this.ResumeAfterFindOrderDialog, message, CancellationToken.None);
         }
