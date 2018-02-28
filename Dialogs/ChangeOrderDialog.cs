@@ -18,7 +18,7 @@ namespace LuisBot.Dialogs
 
         public EntityRecommendation orderDate, orderTrackId;
         public string OrderDate_string, TrackNr_string;
-        public bool checkIfOnlyForTrackId = false;
+        public bool ifFromChangeOrder = false;
         private int Counter;
 
         public ChangeOrderDialog() : base(new LuisService(new LuisModelAttribute(
@@ -45,7 +45,7 @@ namespace LuisBot.Dialogs
                 // Verifica se já há alguma coisa guardada no trackId
                 if (!context.UserData.TryGetValue(ContextConstants.TrackId, out TrackNr_string))
                 {
-                    checkIfOnlyForTrackId = true;
+                    ifFromChangeOrder = true;
                     await context.PostAsync($"Qual o id da encomenda cuja data deseja alterar?");
                     context.Wait(MessageReceived);
                 }
@@ -160,9 +160,9 @@ namespace LuisBot.Dialogs
         private async Task ResumeAfterFindOrderDialog(IDialogContext context, IAwaitable<object> result)
         {
             var message = await result;
-            if (checkIfOnlyForTrackId)
+            if (ifFromChangeOrder)
             {
-                await context.PostAsync("Encomenda encontrada. Por favor **introduza a nova data** de entrega");
+                await context.PostAsync("Por favor introduza a **nova data** de entrega");
                 context.Wait(MessageReceived);
 
             }
