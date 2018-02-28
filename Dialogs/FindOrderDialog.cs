@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.Luis;
@@ -14,6 +15,7 @@ namespace LuisBot.Dialogs
     public class FindOrderDialog : LuisDialog<object>
     {
         private const string EntityTrackId = "TrackingID";
+        public string TrackNr_string;
 
         public FindOrderDialog() : base(new LuisService(new LuisModelAttribute(
           ConfigurationManager.AppSettings["LuisAppId"],
@@ -22,7 +24,6 @@ namespace LuisBot.Dialogs
         {
         }
 
-        public string trackNr, location;
         
 
         // Animation Card
@@ -68,14 +69,38 @@ namespace LuisBot.Dialogs
                 message.Attachments.Add(attachment);
                 await context.PostAsync(message);  */
             } else {
-                await context.PostAsync($"Obrigada pelo número de identificação.");
+                //if (!context.UserData.TryGetValue(ContextConstants.OrderDate, out TrackNr_string))
+                //{
+                    context.UserData.SetValue(ContextConstants.OrderDate, trackId.Entity);
+                    await context.PostAsync($"Obrigada pelo número de identificação.");
+
+                //}
                 context.Done(true);
             }
 
           
         }
 
-      
-        
+
+        [LuisIntent("Help")]
+        [LuisIntent("None")]
+        public async Task RemaningIntents(IDialogContext context, IAwaitable<IMessageActivity> activity, LuisResult result)
+        {
+            context.Done(true);
+        }
+
+        [LuisIntent("Cancel")]
+        private async Task CancelIntent(IDialogContext context, IAwaitable<IMessageActivity> activity, LuisResult result)
+        {
+            var message = await activity;
+            await context.Forward(new CancelOrderDialog(), this.ResumeAfterCancelOrderDialog, message, CancellationToken.None);
+        }
+
+        private async Task ResumeAfterCancelOrderDialog(IDialogContext context, IAwaitable<object> result)
+        {
+            var message = await result;
+            context.Wait(MessageReceived);
+        }
+
     }
 }

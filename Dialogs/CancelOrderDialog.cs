@@ -21,7 +21,7 @@ namespace LuisBot.Dialogs
         {
         }
 
-        
+
         private async Task MessageReceivedAsync(IDialogContext context, IAwaitable<object> result)
         {
             var activity = await result as IMessageActivity;
@@ -29,7 +29,7 @@ namespace LuisBot.Dialogs
             // TODO: Put logic for handling user message here
 
             context.Wait(MessageReceivedAsync);
-        } 
+        }
 
 
 
@@ -56,6 +56,14 @@ namespace LuisBot.Dialogs
                 await context.PostAsync($"A sua encomenda continua a caminho. Obrigado");
             }
 
+            context.Done(true);
+        }
+
+        [LuisIntent("Help")]
+        [LuisIntent("None")]
+        [LuisIntent("FindOrder")]
+        public async Task CancelIntent(IDialogContext context, IAwaitable<IMessageActivity> activity, LuisResult result)
+        {
             context.Done(true);
         }
     }
