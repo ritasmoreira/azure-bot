@@ -42,6 +42,7 @@ namespace LuisBot.Dialogs
 
             if (!result.TryFindEntity(EntityDate, out orderDate))
             {
+                // testar caso user nao tenha nenhum track id ate aqui
                 await context.PostAsync($"Por favor insira a nova data de entrega para a sua encomenda nr {context.UserData.GetValue<string>(ContextConstants.TrackId)}");
                 context.Wait(MessageReceived);
             }
@@ -60,7 +61,7 @@ namespace LuisBot.Dialogs
 
 
                     var message = context.MakeMessage();
-                    message.Text = "Tem a certeza que quer alterar a data?";
+                    message.Text = $"Tem a certeza que quer alterar a data para {context.UserData.GetValue<string>(orderDate.Entity)}?";
                     message.SuggestedActions = new SuggestedActions()
                     {
                         Actions = new List<CardAction>()
@@ -121,8 +122,6 @@ namespace LuisBot.Dialogs
                 if (context.PrivateConversationData.GetValue<int>("NumberTrials") < 2)
                 {
                     Counter = context.PrivateConversationData.GetValue<int>("NumberTrials") + 1;
-
-                    await context.PostAsync($"counter {Counter}");
 
                     context.PrivateConversationData.SetValue("NumberTrials", Counter);
                     await context.PostAsync($"Data incorreta, por favor digite uma data válida");
