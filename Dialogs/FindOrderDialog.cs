@@ -24,7 +24,7 @@ namespace LuisBot.Dialogs
         {
         }
 
-        
+
 
         // Animation Card
         private static Attachment GetAnimationCard()
@@ -49,7 +49,7 @@ namespace LuisBot.Dialogs
             return animationCard.ToAttachment();
         }
 
-        
+
 
         [LuisIntent("FindOrder")]
         private async Task FindOrderIntent(IDialogContext context, LuisResult result)
@@ -58,10 +58,10 @@ namespace LuisBot.Dialogs
 
             if (!result.TryFindEntity(EntityTrackId, out trackId))
             {
-               // await context.PostAsync($"Por favor insira primeiro o número de identificação da sua encomenda. \n You have reached {result.Intents[0].Intent}.");
+                await context.PostAsync($"Por favor insira primeiro o número de identificação da sua encomenda.");
                 context.Wait(MessageReceived);
 
-                 
+
                 /*Attaching gif to message
                 var message = context.MakeMessage();
                 var attachment = GetAnimationCard();
@@ -72,22 +72,30 @@ namespace LuisBot.Dialogs
                 if (!context.UserData.TryGetValue(ContextConstants.TrackId, out TrackNr_string))
                 {
                     context.UserData.SetValue(ContextConstants.TrackId, trackId.Entity);
-                    await context.PostAsync($"Obrigada pelo número de identificação.");
+                    await context.PostAsync($"Obrigada pelo número de identificação. \n A sua encomenda encontra-se a caminho do Porto");
 
                 } else
                 {
                     context.UserData.SetValue(ContextConstants.TrackId, trackId.Entity);
-                    await context.PostAsync($"Obrigada pelo número de identificação.");
+                    await context.PostAsync($"Obrigada pelo número de identificação. \n A sua encomenda encontra-se a caminho do Porto");
                 }
                 context.Done(true);
             }
 
-          
+
         }
 
+        /*
+        [LuisIntent("ChangeOrder")]
+        private async Task ChangeOrderIntent(IDialogContext context, IAwaitable<IMessageActivity> activity, LuisResult result) {
+            var message = await activity;
+            await context.Forward(new ChangeOrderDialog(), this.ResumeAfterChangeOrderDialog, message, CancellationToken.None);
+        } */
+    
 
         [LuisIntent("Help")]
         [LuisIntent("None")]
+        [LuisIntent("ChangeOrder")]
         public async Task RemaningIntents(IDialogContext context, IAwaitable<IMessageActivity> activity, LuisResult result)
         {
             context.Done(true);
@@ -98,6 +106,11 @@ namespace LuisBot.Dialogs
         {
             var message = await activity;
             await context.Forward(new CancelOrderDialog(), this.ResumeAfterCancelOrderDialog, message, CancellationToken.None);
+        }
+
+        private async Task ResumeAfterChangeOrderDialog(IDialogContext context, IAwaitable<object> result)
+        {
+            context.Done(true);
         }
 
         private async Task ResumeAfterCancelOrderDialog(IDialogContext context, IAwaitable<object> result)
