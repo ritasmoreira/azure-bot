@@ -127,11 +127,11 @@ namespace LuisBot.Dialogs
             {
                 if (context.PrivateConversationData.GetValue<int>("NumberTrials") < 2)
                 {
-                    counter = context.PrivateConversationData.GetValue<int>("NumberTrials");
+                    counter = context.PrivateConversationData.GetValue<int>("NumberTrials") +1;
 
                     await context.PostAsync($"counter {counter}");
 
-                    context.PrivateConversationData.SetValue("NumberTrials", counter++);
+                    context.PrivateConversationData.SetValue("NumberTrials", counter);
                     await context.PostAsync($"Data incorreta, por favor tente outra vez");
                     context.Wait(MessageReceived);
                 }
