@@ -119,7 +119,8 @@ namespace LuisBot.Dialogs
             if (!context.UserData.ContainsKey("NumberTrials"))
             {
                 context.UserData.SetValue("NumberTrials", 0);
-                await context.PostAsync($"Data incorreta, por favor tente outra vez");
+                counter = 0;
+                await context.PostAsync($" 0000 Data incorreta, por favor tente outra vez");
                 context.Wait(MessageReceived);
             }
             else
