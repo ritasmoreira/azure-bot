@@ -128,13 +128,14 @@ namespace LuisBot.Dialogs
                 if (context.PrivateConversationData.GetValue<int>("NumberTrials") < 2)
                 {
                     counter = context.PrivateConversationData.GetValue<int>("NumberTrials");
-                    context.PrivateConversationData.SetValue("NumberTrails", counter++);
+                    context.PrivateConversationData.SetValue("NumberTrials", counter++);
                     await context.PostAsync($"Data incorreta, por favor tente outra vez");
                     context.Wait(MessageReceived);
                 }
                 else
                 {
                     await context.PostAsync($"Número de tentativas máximo atingido. \n Por favor contacte companhia");
+                    context.PrivateConversationData.SetValue("NumberTrials", 0);
                     context.Done(true);
                 }
             }
