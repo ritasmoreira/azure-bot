@@ -34,7 +34,6 @@ namespace LuisBot.Dialogs
         [LuisIntent("ChangeOrder")]
         private async Task ChangeOrderIntent(IDialogContext context, IAwaitable<IMessageActivity> activity, LuisResult result)
         {
-            context.UserData.Clear();
             await context.PostAsync($"You have reached {result.Intents[0].Intent}.");
 
             // Verifica se existe alguma entidade do tipo Date na mensagem
