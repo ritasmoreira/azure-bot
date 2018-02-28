@@ -35,14 +35,11 @@ namespace LuisBot.Dialogs
         [LuisIntent("ChangeOrder")]
         private async Task ChangeOrderIntent(IDialogContext context, IAwaitable<IMessageActivity> activity, LuisResult result)
         {
-            //await context.PostAsync($"You have reached {result.Intents[0].Intent}.");
-
+            context.UserData.Clear();
             // Verifica se existe alguma entidade do tipo Date na mensagem
+            // Verifica se já há alguma coisa guardada no trackId
             if (!result.TryFindEntity(EntityDate, out orderDate))
             {
-                // testar caso user nao tenha nenhum track id ate aqui
-
-                // Verifica se já há alguma coisa guardada no trackId
                 if (!context.UserData.TryGetValue(ContextConstants.TrackId, out TrackNr_string))
                 {
                     ifFromChangeOrder = true;

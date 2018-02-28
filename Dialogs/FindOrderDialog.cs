@@ -16,6 +16,7 @@ namespace LuisBot.Dialogs
     {
         private const string EntityTrackId = "TrackingID";
         public string TrackNr_string;
+        public ChangeOrderDialog changeOrderDialog = new ChangeOrderDialog();
 
         public FindOrderDialog() : base(new LuisService(new LuisModelAttribute(
           ConfigurationManager.AppSettings["LuisAppId"],
@@ -68,9 +69,17 @@ namespace LuisBot.Dialogs
                 } else
                 {
                     context.UserData.SetValue(ContextConstants.TrackId, trackId.Entity);
-                    
-                    await context.PostAsync($"Obrigado pelo ID. "); // A sua encomenda encontra-se a caminho do Porto (fazer verificação do bool)
-                    context.Done(true);
+
+                    if (changeOrderDialog.ifFromChangeOrder)
+                    {
+                        await context.PostAsync("ID Recebido");
+                        context.Wait(MessageReceived);
+                    }
+                    else
+                    {
+                        await context.PostAsync($"Obrigado pelo ID. A sua encomenda encontra-se a caminho do Porto"); // A sua encomenda encontra-se a caminho do Porto (fazer verificação do bool)
+                        context.Done(true);
+                    }
                 }
 
 
