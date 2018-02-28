@@ -72,7 +72,7 @@ namespace Microsoft.Bot.Sample.LuisBot
             
             //await this.ShowLuisResult(context, result);
             var message = await activity;
-            await context.PostAsync($"Find ORder Intent");
+            //await context.PostAsync($"Find ORder Intent");
             await context.Forward(new FindOrderDialog(), this.ResumeAfterFindOrderDialog, message, CancellationToken.None);
      
         }

@@ -18,6 +18,7 @@ namespace LuisBot.Dialogs
 
         public EntityRecommendation orderDate, orderTrackId;
         public string OrderDate_string, TrackNr_string;
+        public bool checkIfOnlyForTrackId = false;
         private int Counter;
 
         public ChangeOrderDialog() : base(new LuisService(new LuisModelAttribute(
@@ -44,12 +45,13 @@ namespace LuisBot.Dialogs
                 // Verifica se já há alguma coisa guardada no trackId
                 if (!context.UserData.TryGetValue(ContextConstants.TrackId, out TrackNr_string))
                 {
+                    checkIfOnlyForTrackId = true;
                     await context.PostAsync($"Qual o id da encomenda cuja data deseja alterar?");
                     context.Wait(MessageReceived);
                 }
                 else
                 {
-                    await context.PostAsync($"Por favor insira a nova data de entrega para a sua encomenda com o ID ** {context.UserData.GetValue<string>(ContextConstants.TrackId)} **");
+                    await context.PostAsync($"Por favor insira a nova data de entrega para a sua encomenda com o ID {context.UserData.GetValue<string>(ContextConstants.TrackId)} ");
                     context.Wait(MessageReceived);
                 }
             }
@@ -59,12 +61,12 @@ namespace LuisBot.Dialogs
                 {
                     
                     context.UserData.SetValue(ContextConstants.OrderDate, orderDate.Entity);
-                    await context.PostAsync($"A nova data da sua encomenda foi alterada para: ** {context.UserData.GetValue<string>(ContextConstants.OrderDate)} **");
+                    await context.PostAsync($"A nova data da sua encomenda foi alterada para:  {context.UserData.GetValue<string>(ContextConstants.OrderDate)} ");
 
                 }
                 else
                 {
-                    await context.PostAsync($"A data da encomenda **{context.UserData.GetValue<string>(ContextConstants.TrackId)}** é **{context.UserData.GetValue<string>(ContextConstants.OrderDate)}**");
+                    await context.PostAsync($"A data da encomenda {context.UserData.GetValue<string>(ContextConstants.TrackId)} é {context.UserData.GetValue<string>(ContextConstants.OrderDate)}");
 
                     var message = context.MakeMessage();
                     message.Text = $"Tem a certeza que deseja alterar a data para **{orderDate.Entity}**?";
@@ -92,7 +94,7 @@ namespace LuisBot.Dialogs
             if (activity.Text.Equals("Sim"))
             {
                 context.UserData.SetValue(ContextConstants.OrderDate, orderDate.Entity);
-                await context.PostAsync($"A data foi alterada com sucesso. \n A sua nova data de entrega é: **{context.UserData.GetValue<string>(ContextConstants.OrderDate)}**");
+                await context.PostAsync($"A data foi alterada com sucesso. \n A sua nova data de entrega é: {context.UserData.GetValue<string>(ContextConstants.OrderDate)}");
                 context.Done(true);
             }
             else if (activity.Text.Equals("Não") || activity.Text.Equals("Nao"))
@@ -153,8 +155,13 @@ namespace LuisBot.Dialogs
         private async Task ResumeAfterFindOrderDialog(IDialogContext context, IAwaitable<object> result)
         {
             var message = await result;
-            await context.PostAsync("Encomenda encontrada. Por favor **introduza a nova data** de entrega");
-            context.Wait(MessageReceived);
+            if (checkIfOnlyForTrackId)
+            {
+                await context.PostAsync("Encomenda encontrada. Por favor **introduza a nova data** de entrega");
+                context.Wait(MessageReceived);
+
+            }
+            else context.Done(true);
         }
 
         [LuisIntent("Cancel")]
