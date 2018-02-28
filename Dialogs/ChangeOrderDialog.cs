@@ -43,8 +43,17 @@ namespace LuisBot.Dialogs
             if (!result.TryFindEntity(EntityDate, out orderDate))
             {
                 // testar caso user nao tenha nenhum track id ate aqui
-                await context.PostAsync($"Por favor insira a nova data de entrega para a sua encomenda nr {context.UserData.GetValue<string>(ContextConstants.TrackId)}");
-                context.Wait(MessageReceived);
+
+                if (!result.TryFindEntity(EntityTrackId, out orderTrackId))
+                {
+                    await context.PostAsync($"Qual o id da encomenda cuja data deseja alterar?");
+                    context.Wait(MessageReceived);
+                }
+                else
+                {
+                    await context.PostAsync($"Por favor insira a nova data de entrega para a sua encomenda nr {context.UserData.GetValue<string>(ContextConstants.TrackId)}");
+                    context.Wait(MessageReceived);
+                }
             }
             else
             {
@@ -104,10 +113,25 @@ namespace LuisBot.Dialogs
 
         }
 
+        [LuisIntent("FindOrder")]
+        private async Task FindOrderIntent(IDialogContext context, IAwaitable<IMessageActivity> activity, LuisResult result)
+        {
+            await context.PostAsync("Estou no findOrder do dialogo change");
+
+            var message = await activity;
+            await context.Forward(new FindOrderDialog(), this.ResumeAfterFindOrderDialog, message, CancellationToken.None);
+        }
+
+        private async Task ResumeAfterFindOrderDialog(IDialogContext context, IAwaitable<object> result)
+        {
+            var message = await result;
+            await context.PostAsync("Estou no resume da order");
+            context.Wait(MessageReceived);
+        }
+
         [LuisIntent("Help")]
         [LuisIntent("None")]
-        [LuisIntent("FindOrder")]
-        public async Task RemaningIntents(IDialogContext context, LuisResult result)
+        private async Task RemaningIntents(IDialogContext context, LuisResult result)
         {
             
             if (!context.PrivateConversationData.ContainsKey("NumberTrials"))
