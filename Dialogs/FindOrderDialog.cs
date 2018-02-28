@@ -69,12 +69,16 @@ namespace LuisBot.Dialogs
                 message.Attachments.Add(attachment);
                 await context.PostAsync(message);  */
             } else {
-                //if (!context.UserData.TryGetValue(ContextConstants.OrderDate, out TrackNr_string))
-                //{
+                if (!context.UserData.TryGetValue(ContextConstants.OrderDate, out TrackNr_string))
+                {
                     context.UserData.SetValue(ContextConstants.OrderDate, trackId.Entity);
                     await context.PostAsync($"Obrigada pelo número de identificação.");
 
-                //}
+                } else
+                {
+                    context.UserData.SetValue(ContextConstants.OrderDate, trackId.Entity);
+                    await context.PostAsync($"Obrigada pelo número de identificação.");
+                }
                 context.Done(true);
             }
 
