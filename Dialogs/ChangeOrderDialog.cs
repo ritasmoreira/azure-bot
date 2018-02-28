@@ -35,7 +35,6 @@ namespace LuisBot.Dialogs
         [LuisIntent("ChangeOrder")]
         private async Task ChangeOrderIntent(IDialogContext context, IAwaitable<IMessageActivity> activity, LuisResult result)
         {
-            context.UserData.Clear();
             // Verifica se existe alguma entidade do tipo Date na mensagem
             // Verifica se já há alguma coisa guardada no trackId
             if (!result.TryFindEntity(EntityDate, out orderDate))

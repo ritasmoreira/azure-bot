@@ -70,16 +70,9 @@ namespace LuisBot.Dialogs
                 {
                     context.UserData.SetValue(ContextConstants.TrackId, trackId.Entity);
 
-                    if (changeOrderDialog.ifFromChangeOrder)
-                    {
-                        await context.PostAsync("ID Recebido");
-                        context.Wait(MessageReceived);
-                    }
-                    else
-                    {
-                        await context.PostAsync($"Obrigado pelo ID. A sua encomenda encontra-se a caminho do Porto"); // A sua encomenda encontra-se a caminho do Porto (fazer verificação do bool)
-                        context.Done(true);
-                    }
+                    await context.PostAsync($"Obrigado pelo ID. A sua encomenda encontra-se a caminho do Porto"); // A sua encomenda encontra-se a caminho do Porto (fazer verificação do bool)
+                    context.Done(true);
+                    
                 }
 
 
