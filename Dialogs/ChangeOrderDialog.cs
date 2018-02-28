@@ -26,7 +26,7 @@ namespace LuisBot.Dialogs
 
         public EntityRecommendation orderDate, orderTrackId;
         public string orderDate_string;
-
+        private int counter;
 
 
         [LuisIntent("ChangeOrder")]
@@ -115,11 +115,11 @@ namespace LuisBot.Dialogs
         [LuisIntent("FindOrder")]
         public async Task CancelIntent(IDialogContext context, LuisResult result)
         {
-            int counter;
+            
             if (!context.PrivateConversationData.ContainsKey("NumberTrials"))
             {
                 context.PrivateConversationData.SetValue("NumberTrials", 0);
-                counter = 0;
+                
                 await context.PostAsync($" 0000 Data incorreta, por favor tente outra vez");
                 context.Wait(MessageReceived);
             }
