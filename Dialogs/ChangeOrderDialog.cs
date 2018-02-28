@@ -64,12 +64,12 @@ namespace LuisBot.Dialogs
                 }
                 else
                 {
-                    await context.PostAsync($"A data anterior da encomenda {context.UserData.GetValue<string>(ContextConstants.TrackId)} era {context.UserData.GetValue<string>(ContextConstants.OrderDate)}");
+                    await context.PostAsync($"A data da encomenda {context.UserData.GetValue<string>(ContextConstants.TrackId)} é {context.UserData.GetValue<string>(ContextConstants.OrderDate)}");
 
-                    await context.PostAsync($" Order date {orderDate.EndIndex}");
-                    await context.PostAsync($" Order date {orderDate.EndIndex}");
+                    await context.PostAsync($" Order date {OrderDate_string}");
+                    await context.PostAsync($" Entity {orderDate.Entity}");
                     var message = context.MakeMessage();
-                    message.Text = $"Tem a certeza que quer alterar a data para?";
+                    message.Text = $"Tem a certeza que deseja alterar a data para {orderDate.Entity}?";
                     message.SuggestedActions = new SuggestedActions()
                     {
                         Actions = new List<CardAction>()
