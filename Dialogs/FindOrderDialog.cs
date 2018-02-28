@@ -75,7 +75,7 @@ namespace LuisBot.Dialogs
 
 
             } else {
-                await context.PostAsync($"A sua encomenda (**ID**: {TrackNr_string}) encontra-se a caminho do Porto");
+                await context.PostAsync($"A sua encomenda (**ID: {TrackNr_string}) encontra-se a caminho do Porto**");
                 context.Done(true);
             }
 
