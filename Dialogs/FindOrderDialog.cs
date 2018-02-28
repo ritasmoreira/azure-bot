@@ -58,7 +58,7 @@ namespace LuisBot.Dialogs
 
             if (!result.TryFindEntity(EntityTrackId, out trackId))
             {
-                await context.PostAsync($"Por favor insira primeiro o número de identificação da sua encomenda. \n You have reached {result.Intents[0].Intent}.");
+               // await context.PostAsync($"Por favor insira primeiro o número de identificação da sua encomenda. \n You have reached {result.Intents[0].Intent}.");
                 context.Wait(MessageReceived);
 
                  

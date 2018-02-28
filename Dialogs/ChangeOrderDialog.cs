@@ -49,7 +49,7 @@ namespace LuisBot.Dialogs
                 }
                 else
                 {
-                    await context.PostAsync($"Por favor insira a nova data de entrega para a sua encomenda nr {context.UserData.GetValue<string>(ContextConstants.TrackId)}");
+                    await context.PostAsync($"Por favor insira a nova data de entrega para a sua encomenda com o ID ** {context.UserData.GetValue<string>(ContextConstants.TrackId)} **");
                     context.Wait(MessageReceived);
                 }
             }
@@ -59,15 +59,15 @@ namespace LuisBot.Dialogs
                 {
                     
                     context.UserData.SetValue(ContextConstants.OrderDate, orderDate.Entity);
-                    await context.PostAsync($"A nova data da sua encomenda foi alterada para: {context.UserData.GetValue<string>(ContextConstants.OrderDate)}");
+                    await context.PostAsync($"A nova data da sua encomenda foi alterada para: ** {context.UserData.GetValue<string>(ContextConstants.OrderDate)} **");
 
                 }
                 else
                 {
-                    await context.PostAsync($"A data da encomenda {context.UserData.GetValue<string>(ContextConstants.TrackId)} é {context.UserData.GetValue<string>(ContextConstants.OrderDate)}");
+                    await context.PostAsync($"A data da encomenda **{context.UserData.GetValue<string>(ContextConstants.TrackId)}** é **{context.UserData.GetValue<string>(ContextConstants.OrderDate)}**");
 
                     var message = context.MakeMessage();
-                    message.Text = $"Tem a certeza que deseja alterar a data para {orderDate.Entity}?";
+                    message.Text = $"Tem a certeza que deseja alterar a data para **{orderDate.Entity}**?";
                     message.SuggestedActions = new SuggestedActions()
                     {
                         Actions = new List<CardAction>()
@@ -121,7 +121,7 @@ namespace LuisBot.Dialogs
             {
                 context.PrivateConversationData.SetValue("NumberTrials", 0);
                 
-                await context.PostAsync($"Data incorreta, por favor digite uma data válida");
+                await context.PostAsync($"Data **incorreta**, por favor digite uma data válida");
                 context.Wait(MessageReceived);
             }
             else
@@ -131,7 +131,7 @@ namespace LuisBot.Dialogs
                     Counter = context.PrivateConversationData.GetValue<int>("NumberTrials") + 1;
 
                     context.PrivateConversationData.SetValue("NumberTrials", Counter);
-                    await context.PostAsync($"Data incorreta, por favor digite uma data válida");
+                    await context.PostAsync($"Data **incorreta**, por favor digite uma data válida");
                     context.Wait(MessageReceived);
                 }
                 else
@@ -153,7 +153,7 @@ namespace LuisBot.Dialogs
         private async Task ResumeAfterFindOrderDialog(IDialogContext context, IAwaitable<object> result)
         {
             var message = await result;
-            await context.PostAsync("Encomenda encontrada. Por favor introduza a nova data de entrega");
+            await context.PostAsync("Encomenda encontrada. Por favor **introduza a nova data** de entrega");
             context.Wait(MessageReceived);
         }
 
