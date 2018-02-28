@@ -51,7 +51,7 @@ namespace LuisBot.Dialogs
                 }
                 else
                 {
-                    await context.PostAsync($"Por favor insira a nova data de entrega para a sua encomenda com o ID {context.UserData.GetValue<string>(ContextConstants.TrackId)} ");
+                    await context.PostAsync($"Por favor insira a nova data de entrega para a sua encomenda (**ID**: {context.UserData.GetValue<string>(ContextConstants.TrackId)})");
                     context.Wait(MessageReceived);
                 }
             }
@@ -61,12 +61,17 @@ namespace LuisBot.Dialogs
                 {
                     
                     context.UserData.SetValue(ContextConstants.OrderDate, orderDate.Entity);
-                    await context.PostAsync($"A nova data da sua encomenda foi alterada para:  {context.UserData.GetValue<string>(ContextConstants.OrderDate)} ");
+
+                    string novaDataEncomenda = context.UserData.GetValue<string>(ContextConstants.OrderDate);
+                    await context.PostAsync($"A nova data da sua encomenda foi alterada para:  **{novaDataEncomenda}** ");
 
                 }
                 else
                 {
-                    await context.PostAsync($"A data da encomenda {context.UserData.GetValue<string>(ContextConstants.TrackId)} é {context.UserData.GetValue<string>(ContextConstants.OrderDate)}");
+                    string idEncomenda = context.UserData.GetValue<string>(ContextConstants.TrackId);
+                    string dataEncomendaVelha = context.UserData.GetValue<string>(ContextConstants.OrderDate);
+
+                    await context.PostAsync($"A data da encomenda **{idEncomenda}** é **{dataEncomendaVelha}**");
 
                     var message = context.MakeMessage();
                     message.Text = $"Tem a certeza que deseja alterar a data para **{orderDate.Entity}**?";
