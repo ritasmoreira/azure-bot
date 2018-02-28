@@ -94,7 +94,7 @@ namespace LuisBot.Dialogs
             if (activity.Text.Equals("Sim"))
             {
                 context.UserData.SetValue(ContextConstants.OrderDate, orderDate.Entity);
-                await context.PostAsync($"A data foi alterada com sucesso. \n A sua nova data de entrega é: {context.UserData.GetValue<string>(ContextConstants.OrderDate)}");
+                await context.PostAsync($"A data foi alterada com sucesso. \n A sua nova data de entrega é: **{context.UserData.GetValue<string>(ContextConstants.OrderDate)}**");
                 context.Done(true);
             }
             else if (activity.Text.Equals("Não") || activity.Text.Equals("Nao"))

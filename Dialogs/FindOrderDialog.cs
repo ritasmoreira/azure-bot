@@ -56,29 +56,25 @@ namespace LuisBot.Dialogs
         {
             EntityRecommendation trackId;
 
-            if (!result.TryFindEntity(EntityTrackId, out trackId))
-            {
-                await context.PostAsync($"Por favor insira primeiro o número de identificação da sua encomenda.");
-                context.Wait(MessageReceived);
-
-
-                /*Attaching gif to message
-                var message = context.MakeMessage();
-                var attachment = GetAnimationCard();
-           
-                message.Attachments.Add(attachment);
-                await context.PostAsync(message);  */
-            } else {
-                if (!context.UserData.TryGetValue(ContextConstants.TrackId, out TrackNr_string))
+            // Verifica se há um track ID guardado no User
+            // Depois vê se o user escreveu algum track ID na mensagem
+            if (!context.UserData.TryGetValue(ContextConstants.TrackId, out TrackNr_string)) {
+               
+                if (!result.TryFindEntity(EntityTrackId, out trackId))
                 {
-                    context.UserData.SetValue(ContextConstants.TrackId, trackId.Entity);
-                    await context.PostAsync($"Obrigada pelo número de identificação. \n A sua encomenda encontra-se a caminho do Porto");
-
+                    await context.PostAsync($"Por favor insira primeiro o número de identificação da sua encomenda.");
+                    context.Wait(MessageReceived);
+                    
                 } else
                 {
                     context.UserData.SetValue(ContextConstants.TrackId, trackId.Entity);
-                    await context.PostAsync($"Obrigada pelo número de identificação. \n A sua encomenda encontra-se a caminho do Porto");
+                    await context.PostAsync($"Obrigado pelo ID. A sua encomenda encontra-se a caminho do Porto");
+                    context.Done(true);
                 }
+
+
+            } else {
+                await context.PostAsync($"A sua encomenda (**ID**: {TrackNr_string}) encontra-se a caminho do Porto");
                 context.Done(true);
             }
 
@@ -121,3 +117,12 @@ namespace LuisBot.Dialogs
 
     }
 }
+
+
+
+/*Attaching gif to message
+var message = context.MakeMessage();
+var attachment = GetAnimationCard();
+
+message.Attachments.Add(attachment);
+await context.PostAsync(message);  */
